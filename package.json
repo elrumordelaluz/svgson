@@ -1,0 +1,23 @@
+{
+  "name": "svgson",
+  "version": "1.0.0",
+  "description": "Transform svg files to json notation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elrumordelaluz/svgson.git"
+  },
+  "keywords": [
+    "svg",
+    "json"
+  ],
+  "author": "Lionel T <elrumordelaluz@hotmail.com> (http://elrumordelaluz.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/elrumordelaluz/svgson/issues"
+  },
+  "homepage": "https://github.com/elrumordelaluz/svgson#readme"
+}
