@@ -50,9 +50,9 @@ module.exports = function(input, options) {
         });
       }
 
-    } else if (source.nodeType == 3 && /\S/.test(source.nodeValue)) {
-      obj.name = 'text';
-      obj.content = source.nodeValue;
+    // } else if (source.nodeType == 3 && /\S/.test(source.nodeValue)) {
+    //   obj.name = 'text';
+    //   obj.content = source.nodeValue;
     }
 
     if (source.hasChildNodes()) {
@@ -67,7 +67,7 @@ module.exports = function(input, options) {
       obj['childs'] = elements;
     }
 
-    return config.json ? JSON.stringify(obj, null, 2) : obj;
+    return obj;
   };
 
   var optimize = function (input) {
@@ -76,6 +76,7 @@ module.exports = function(input, options) {
     });
   }
 
+  // TODO: review output stuff based on configs
   var r;
   if (exist(input)) {
     data = fs.readFileSync(input, 'utf8')
@@ -88,7 +89,13 @@ module.exports = function(input, options) {
         r = parse(data);
       }
     }
-    return r ? generate(r) : false;
+    
+    if (config.json) {
+      return r ? JSON.stringify(generate(r), null, 2) : false;
+    } else {
+      return r ? generate(r) : false;
+    }
+
   } else {
     data = input;
     if (parse(data)) {
@@ -100,7 +107,13 @@ module.exports = function(input, options) {
         r = parse(data);
       }
     }
-    return r ? generate(r) : false;
+
+    if (config.json) {
+      return r ? JSON.stringify(generate(r), null, 2) : false;
+    } else {
+      return r ? generate(r) : false;
+    }
+
   }
   
 };
