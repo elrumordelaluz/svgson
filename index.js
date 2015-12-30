@@ -28,7 +28,8 @@ module.exports = function(input, options) {
     }
   }
 
-  var data;
+  var data, 
+      r;
 
   var parse = function(input) {
     var doc = new DOMParser().parseFromString(input);
@@ -64,10 +65,24 @@ module.exports = function(input, options) {
     return obj;
   };
 
+  var arr = [];
+
   // TODO: review output stuff based on configs
-  var r;
-  if (exist(input)) {
-    data = fs.readFileSync(input, 'utf8')
+  function acumFiles(dir, cb) {
+    fs.readdir(dir, function (err, files) {
+       if (err)
+          throw err;
+       for (var index in files) {
+          var extension = path.extname(files[index])
+       }
+       cb();
+     });
+  }
+
+  // acumFiles('svg', function() {} )
+
+  function processFile (file) {
+    var data = exist(file) ? fs.readFileSync(file, 'utf8') : file;
     if (parse(data)) {
       if (config.svgo) {
         new SVGO({ plugins: config.svgoPlugins }).optimize(data, function(result) {
@@ -84,24 +99,8 @@ module.exports = function(input, options) {
       return r ? generate(r) : false;
     }
 
-  } else {
-    data = input;
-    if (parse(data)) {
-      if (config.svgo) {
-        new SVGO({ plugins: config.svgoPlugins }).optimize(data, function(result) {
-          r = parse(result.data);
-        });  
-      } else {
-        r = parse(data);
-      }
-    }
-
-    if (config.json) {
-      return r ? JSON.stringify(generate(r), null, 2) : false;
-    } else {
-      return r ? generate(r) : false;
-    }
-
   }
+
+  return processFile(input);
   
 };
