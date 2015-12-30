@@ -5,13 +5,7 @@ var fs = require('fs'),
     xmldom = require('xmldom'),
     DOMParser = xmldom.DOMParser,
     SVGO = require('svgo'),
-    svgo = new SVGO({
-      plugins: [{
-        removeStyleElement: true
-      }]
-    });
-
-var exist = require('./existsSync');
+    exist = require('./existsSync');
 
 var camelCase = function (prop) {
   return prop.replace(/[-|:]([a-z])/gi, function (all, letter) {
@@ -22,7 +16,10 @@ var camelCase = function (prop) {
 module.exports = function(input, options) {
   var config = {
     json: false,
-    svgo: false
+    svgo: false,
+    svgoPlugins: [
+      { removeStyleElement: true }
+      ]
   };
   
   for(var prop in options) {
@@ -50,9 +47,6 @@ module.exports = function(input, options) {
         });
       }
 
-    // } else if (source.nodeType == 3 && /\S/.test(source.nodeValue)) {
-    //   obj.name = 'text';
-    //   obj.content = source.nodeValue;
     }
 
     if (source.hasChildNodes()) {
@@ -70,19 +64,13 @@ module.exports = function(input, options) {
     return obj;
   };
 
-  var optimize = function (input) {
-    svgo.optimize(input, function(result) {
-        return result.data;
-    });
-  }
-
   // TODO: review output stuff based on configs
   var r;
   if (exist(input)) {
     data = fs.readFileSync(input, 'utf8')
     if (parse(data)) {
       if (config.svgo) {
-        svgo.optimize(data, function(result) {
+        new SVGO({ plugins: config.svgoPlugins }).optimize(data, function(result) {
           r = parse(result.data);
         });  
       } else {
@@ -100,7 +88,7 @@ module.exports = function(input, options) {
     data = input;
     if (parse(data)) {
       if (config.svgo) {
-        svgo.optimize(data, function(result) {
+        new SVGO({ plugins: config.svgoPlugins }).optimize(data, function(result) {
           r = parse(result.data);
         });  
       } else {
