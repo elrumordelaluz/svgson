@@ -35,7 +35,7 @@ module.exports = function(input, options) {
 
   var parse = function(input) {
     var doc = new DOMParser().parseFromString(input);
-    return doc.documentElement ? doc : undefined;
+    return doc.documentElement ? doc.documentElement : undefined;
   };
 
   var generate = function(source) {
