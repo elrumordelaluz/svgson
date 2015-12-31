@@ -65,21 +65,27 @@ module.exports = function(input, options) {
     return obj;
   };
 
-  var arr = [];
 
-  // TODO: review output stuff based on configs
-  function acumFiles(dir, cb) {
-    fs.readdir(dir, function (err, files) {
-       if (err)
-          throw err;
-       for (var index in files) {
-          var extension = path.extname(files[index])
-       }
-       cb();
-     });
+  function processArray (folder) {
+    var resultArr = [];
+    var files = fs.readdirSync(folder);
+    async.each(files, function(file, callback) {
+      // console.log('Processing file ' + file);
+      resultArr.push(processFile(folder + '/' + file));
+      // console.log('File processed');
+      callback();
+      }
+      // , function(err){
+      //   if (err) {
+      //     console.log('A file failed to process');
+      //   } else {
+      //     console.log('All files have been processed successfully');
+      //   }
+      // }
+    )
+    
+    return resultArr;
   }
-
-  // acumFiles('svg', function() {} )
 
   function processFile (file) {
     var data = exist(file) ? fs.readFileSync(file, 'utf8') : file;
@@ -93,14 +99,13 @@ module.exports = function(input, options) {
       }
     }
     
-    if (config.json) {
-      return r ? JSON.stringify(generate(r), null, 2) : false;
-    } else {
-      return r ? generate(r) : false;
-    }
-
+    return r ? generate(r) : false;
   }
 
-  return processFile(input);
-  
+  if (fs.statSync(input).isDirectory()) {
+    return config.json ? JSON.stringify(processArray(input), null, 2) : processArray(input)
+  } else {
+    return config.json ? JSON.stringify(processFile(input), null, 2) : processFile(input)
+  }
+
 };
