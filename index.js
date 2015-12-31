@@ -33,7 +33,12 @@ module.exports = function(input, options) {
 
   var parse = function(input) {
     var doc = new DOMParser().parseFromString(input);
-    return doc.documentElement ? doc.documentElement : undefined;
+    return doc.documentElement ? doc.documentElement : false;
+  };
+
+  var parsable = function(input) {
+    var doc = new DOMParser().parseFromString(input);
+    return doc.documentElement ? true : false;
   };
 
   var generate = function(source) {
@@ -66,24 +71,25 @@ module.exports = function(input, options) {
   };
 
 
-  function processArray (folder) {
+  function processFolder (folder) {
     var resultArr = [];
     var files = fs.readdirSync(folder);
     async.each(files, function(file, callback) {
-      // console.log('Processing file ' + file);
       resultArr.push(processFile(folder + '/' + file));
-      // console.log('File processed');
       callback();
       }
-      // , function(err){
-      //   if (err) {
-      //     console.log('A file failed to process');
-      //   } else {
-      //     console.log('All files have been processed successfully');
-      //   }
-      // }
     )
     
+    return resultArr;
+  }
+
+  function processArray (array) {
+    var resultArr = [];
+    async.each(array, function(file, callback) {
+      resultArr.push(processFile(file));
+      callback();
+      }
+    )
     return resultArr;
   }
 
@@ -102,10 +108,19 @@ module.exports = function(input, options) {
     return r ? generate(r) : false;
   }
 
-  if (fs.statSync(input).isDirectory()) {
+  // console.log(parsable(['a','v']))
+  if (typeof input === 'string') {
+    if (parsable(input)) {
+      return config.json ? JSON.stringify(processFile(input), null, 2) : processFile(input);
+    } else {
+      if (fs.statSync(input).isDirectory()) {
+        return config.json ? JSON.stringify(processFolder(input), null, 2) : processFolder(input);
+      } else {
+        return config.json ? JSON.stringify(processFile(input), null, 2) : processFile(input);
+      }
+    }  
+  } else if (input instanceof Array) {
     return config.json ? JSON.stringify(processArray(input), null, 2) : processArray(input)
-  } else {
-    return config.json ? JSON.stringify(processFile(input), null, 2) : processFile(input)
   }
-
+  
 };
