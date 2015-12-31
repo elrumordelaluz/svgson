@@ -15,7 +15,7 @@
     "json"
   ],
   "author": "Lionel T <elrumordelaluz@hotmail.com> (http://elrumordelaluz.com)",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/elrumordelaluz/svgson/issues"
   },
