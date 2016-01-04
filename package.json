@@ -20,10 +20,12 @@
     "url": "https://github.com/elrumordelaluz/svgson/issues"
   },
   "homepage": "https://github.com/elrumordelaluz/svgson#readme",
-  "devDependencies": {
+  "dependencies": {
     "async": "^1.5.0",
     "svgo": "^0.6.1",
-    "tape": "^4.4.0",
     "xmldom": "^0.1.19"
+  },
+  "devDependencies": {
+    "tape": "^4.4.0"
   }
 }
