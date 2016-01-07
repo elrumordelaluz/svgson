@@ -17,18 +17,19 @@ module.exports = function(input, options) {
   var config = {
     json: false,
     svgo: false,
+    title: false,
     svgoPlugins: [
       { removeStyleElement: true }
       ]
   };
-  
+
   for(var prop in options) {
     if(options.hasOwnProperty(prop)){
       config[prop] = options[prop];
     }
   }
 
-  var data, 
+  var data,
       r;
 
   var parse = function(input) {
@@ -42,7 +43,7 @@ module.exports = function(input, options) {
   };
 
   var generate = function(source) {
-    var obj = {}; 
+    var obj = {};
     if (source.nodeType === 1) {
       obj.name = source.nodeName;
 
@@ -70,6 +71,39 @@ module.exports = function(input, options) {
     return obj;
   };
 
+  function processFile (file) {
+    var data = exist(file) ? fs.readFileSync(file, 'utf8') : file;
+    var title;
+
+    if (parse(data)) {
+      // Get title
+      [].slice.call(parse(data).attributes).forEach(function(item) {
+        if (item.name === 'title') {
+            title = item.value;
+        }
+      });
+
+      if (config.svgo) {
+        new SVGO({ plugins: config.svgoPlugins }).optimize(data, function(result) {
+          r = parse(result.data);
+        });
+      } else {
+        r = parse(data);
+      }
+    }
+
+    var result = r ? generate(r) : false;
+
+    if (config.title) {
+      var extension = path.extname(file);
+      var fileTitle = exist(file) ? path.basename(file, extension) : title;
+      if (fileTitle !== undefined) {
+          result.title = fileTitle;
+      }
+    }
+
+    return result;
+  }
 
   function processFolder (folder) {
     var resultArr = [];
@@ -79,7 +113,7 @@ module.exports = function(input, options) {
       callback();
       }
     )
-    
+
     return resultArr;
   }
 
@@ -93,22 +127,6 @@ module.exports = function(input, options) {
     return resultArr;
   }
 
-  function processFile (file) {
-    var data = exist(file) ? fs.readFileSync(file, 'utf8') : file;
-    if (parse(data)) {
-      if (config.svgo) {
-        new SVGO({ plugins: config.svgoPlugins }).optimize(data, function(result) {
-          r = parse(result.data);
-        });  
-      } else {
-        r = parse(data);
-      }
-    }
-    
-    return r ? generate(r) : false;
-  }
-
-  // console.log(parsable(['a','v']))
   if (typeof input === 'string') {
     if (parsable(input)) {
       return config.json ? JSON.stringify(processFile(input), null, 2) : processFile(input);
@@ -118,9 +136,9 @@ module.exports = function(input, options) {
       } else {
         return config.json ? JSON.stringify(processFile(input), null, 2) : processFile(input);
       }
-    }  
+    }
   } else if (input instanceof Array) {
     return config.json ? JSON.stringify(processArray(input), null, 2) : processArray(input)
   }
-  
+
 };
