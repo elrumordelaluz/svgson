@@ -15,7 +15,7 @@ var svgson = require('svgson');
 var output = svgson('test.svg', { json: true, svgo: true })
 ```
 
-Get this `cvonsole.log(output)` output:
+Get this `console.log(output)` output:
 ```json
 {
   "name": "svg",
@@ -42,6 +42,7 @@ Get this `cvonsole.log(output)` output:
 - Apply [Svgo](https://github.com/svg/svgo) optimization to the `svg` source. `Boolean` Default: `svgo: false`
 - Add custom Svgo [Plugins](https://github.com/svg/svgo#what-it-can-do). `Array` Default: `[ { removeStyleElement: true } ]`
 - Add a general **Title** attribute. If from `file` will be the `filename`, if from `String`, the `title` attribute if exist. `Boolean` Default: `title: false`
+- Add custom attributes. `Object` Default: `customAttrs: {}`
 
 ```js
 var svgson = require('svgson');
@@ -52,7 +53,8 @@ var options = {
   svgoPlugins: [
     { removeStyleElement: true }
   ],
-  title: false
+  title: false,
+  customAttrs: {}
 };
 
 svgson(source, options);
@@ -81,6 +83,9 @@ var out_object_custom = svgson('test.svg', {
 
 // JSON with Title
 var out_json_opt = svgson('test.svg', { json: true, title: true });
+
+// JSON with Custom Attributes
+var out_json_opt = svgson('test.svg', { json: true, customAttrs: { hello: 'world' } });
 
 ```
 ### Inputs
