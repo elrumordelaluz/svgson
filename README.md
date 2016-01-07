@@ -42,7 +42,7 @@ Get this `console.log(output)` output:
 - Apply [Svgo](https://github.com/svg/svgo) optimization to the `svg` source. `Boolean` Default: `svgo: false`
 - Add custom Svgo [Plugins](https://github.com/svg/svgo#what-it-can-do). `Array` Default: `[ { removeStyleElement: true } ]`
 - Add a general **Title** attribute. If from `file` will be the `filename`, if from `String`, the `title` attribute if exist. `Boolean` Default: `title: false`
-- Add custom attributes. `Object` Default: `customAttrs: {}`
+- Add same custom attributes for each item. `Object` Default: `customAttrs: {}`
 
 ```js
 var svgson = require('svgson');
@@ -77,15 +77,23 @@ var out_json_opt = svgson('test.svg', { json: true, svgo: true });
 
 // Object with SVG Optimized with custom plugins
 var out_object_custom = svgson('test.svg', {
-                                    svgo: true,
-                                    svgoPlugins: [ { sortAttrs: true } ]
-                                  });
+  svgo: true,
+  svgoPlugins: [ { sortAttrs: true } ]
+});
 
 // JSON with Title
 var out_json_opt = svgson('test.svg', { json: true, title: true });
 
 // JSON with Custom Attributes
-var out_json_opt = svgson('test.svg', { json: true, customAttrs: { hello: 'world' } });
+var files = ['test.svg', '/svg/at.svg'];
+var out_json_opt = svgson(files, {
+  json: true,
+  customAttrs: {
+    hello: 'world',
+    generalComment: 'Lorem ipsum dolor sit amet',
+    total: files.length
+  }
+});
 
 ```
 ### Inputs
