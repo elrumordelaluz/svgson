@@ -109,7 +109,7 @@ var out_from_data = svgson(str);
 
 // Source from Multiple Data
 var arr = ['<svg><rect height="100" width="100" stroke="#333"/></svg>', '<svg><rect height="250" width="50" fill="#faa"/></svg>'];
-var out_from_multiple = svgson(str);
+var out_from_multiple = svgson(arr);
 ```
 
 ## License
