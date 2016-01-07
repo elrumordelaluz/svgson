@@ -5,7 +5,7 @@ const str = '<svg title="SVG Title" style="fill: green;"><path class="st0" d="M4
 const arr = ['<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><rect x="10" y="10" height="100" width="100" style="stroke:#ff0000; fill: #0000ff"/></svg>', '<svg><rect x="10" y="10" height="200" width="200" stroke="#333"/></svg>'];
 
 test('SVG to Object Test', function (t) {
-    t.plan(12);
+    t.plan(14);
 
     // SVG File
     t.equal(typeof svg2obj('test.svg'), 'object', 'SVG file converted to Object');
@@ -37,5 +37,9 @@ test('SVG to Object Test', function (t) {
     t.equal(svg2obj('test.svg', { svgo: true, title: true }).title, 'test', 'Object title same as File name')
     t.equal(svg2obj(str, { svgo: true, title: true }).title, 'SVG Title', 'Object title same as Title Attribute')
     t.equal(svg2obj(arr[0], { svgo: true, title: true }).title, undefined, 'Object without title when not defined as attribute in String')
+
+    // customAttrs
+    t.equal(svg2obj('test.svg', { svgo: true, title: true, customAttrs: { hello: 'world' } }).hello, 'world', 'Assigned Custom Attributes')
+
 
 });
