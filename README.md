@@ -11,11 +11,8 @@ $ npm install --save svgson
 ## Usage
 
 ```js
-var fs = require('fs');
 var svgson = require('svgson');
-
 var output = svgson('test.svg', { json: true, svgo: true })
-fs.writeFile('test.json', output);
 ```
 
 Write this output in `test.json` file:
