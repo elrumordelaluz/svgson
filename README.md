@@ -44,6 +44,7 @@ Write this output in `test.json` file:
 - Output Type between Object and JSON. `Boolean` Default: `json: false`
 - Apply [Svgo](https://github.com/svg/svgo) optimization to the `svg` source. `Boolean` Default: `svgo: false`
 - Add custom Svgo [Plugins](https://github.com/svg/svgo#what-it-can-do). `Array` Default: `[ { removeStyleElement: true } ]`
+- Add a general **Title** attribute. If from `file` will be the `filename`, if from `String`, the `title` attribute if exist. `Boolean` Default: `title: false`
 
 ```js
 var svgson = require('svgson');
@@ -53,7 +54,8 @@ var options = {
   svgo: false,
   svgoPlugins: [
     { removeStyleElement: true }
-  ]
+  ],
+  title: false
 };
 
 svgson(source, options);
@@ -68,17 +70,20 @@ var out_object = svgson('test.svg');
 // JSON
 var out_json = svgson('test.svg', { json: true });
 
-// Object with SVG Optimized 
+// Object with SVG Optimized
 var out_object_opt = svgson('test.svg', { svgo: true });
 
 // JSON with SVG Optimized
 var out_json_opt = svgson('test.svg', { json: true, svgo: true });
 
 // Object with SVG Optimized with custom plugins
-var out_object_custom = svgson('test.svg', { 
+var out_object_custom = svgson('test.svg', {
                                     svgo: true,
                                     svgoPlugins: [ { sortAttrs: true } ]
                                   });
+
+// JSON with Title
+var out_json_opt = svgson('test.svg', { json: true, title: true });
 
 ```
 ### Inputs
