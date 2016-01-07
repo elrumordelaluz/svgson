@@ -20,7 +20,8 @@ module.exports = function(input, options) {
     title: false,
     svgoPlugins: [
       { removeStyleElement: true }
-      ]
+    ],
+    customAttrs: {}
   };
 
   for(var prop in options) {
@@ -99,6 +100,12 @@ module.exports = function(input, options) {
       var fileTitle = exist(file) ? path.basename(file, extension) : title;
       if (fileTitle !== undefined) {
           result.title = fileTitle;
+      }
+    }
+
+    for(var prop in config.customAttrs) {
+      if(config.customAttrs.hasOwnProperty(prop)){
+        result[prop] = config.customAttrs[prop];
       }
     }
 
