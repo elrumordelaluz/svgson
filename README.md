@@ -15,7 +15,7 @@ var svgson = require('svgson');
 var output = svgson('test.svg', { json: true, svgo: true })
 ```
 
-Write this output in `test.json` file:
+The output `console.log(output)` results:
 ```json
 {
   "name": "svg",
