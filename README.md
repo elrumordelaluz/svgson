@@ -1,6 +1,6 @@
 # SVGson [![Build Status](https://travis-ci.org/elrumordelaluz/svgson.svg?branch=master)](https://travis-ci.org/elrumordelaluz/svgson)
 
-> Transform `svg` files into `json` notation
+> Transform `svg` files and Strings into `Object` or `JSON` with useful options
 
 ## Install
 
