@@ -97,9 +97,9 @@ var out_json_opt = svgson(files, {
 
 ```
 ### Inputs
-- File path `Stinrg`
-- Directory path `Stinrg`
-- SVG data `Stinrg`
+- File path `String`
+- Directory path `String`
+- SVG data `String`
 - Multiple SVG data `Array`
 
 ```js
