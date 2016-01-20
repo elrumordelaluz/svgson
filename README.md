@@ -43,6 +43,7 @@ Get this `console.log(output)` output:
 - Add custom Svgo [Plugins](https://github.com/svg/svgo#what-it-can-do). `Array` Default: `[ { removeStyleElement: true } ]`
 - Add a general **Title** attribute. If from `file` will be the `filename`, if from `String`, the `title` attribute if exist. `Boolean` Default: `title: false`
 - Add same custom attributes for each item. `Object` Default: `customAttrs: {}`
+- Add a `key` where to encapsulate the output in the `Object` Default: `''`
 
 ```js
 var svgson = require('svgson');
@@ -54,7 +55,8 @@ var options = {
     { removeStyleElement: true }
   ],
   title: false,
-  customAttrs: {}
+  customAttrs: {},
+  outputKey: ''
 };
 
 svgson(source, options);
@@ -94,6 +96,9 @@ var out_json_opt = svgson(files, {
     total: files.length
   }
 });
+
+// JSON with Output Key Encapsulation
+var out_json_key = svgson('test.svg', { json: true, outputKey: 'myPaths' });
 
 ```
 ### Inputs
