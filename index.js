@@ -18,6 +18,7 @@ module.exports = function(input, options) {
     json: false,
     svgo: false,
     title: false,
+    outputKey: '',
     svgoPlugins: [
       { removeStyleElement: true }
     ],
@@ -93,7 +94,13 @@ module.exports = function(input, options) {
       }
     }
 
-    var result = r ? generate(r) : false;
+    var result = {};
+    if (config.outputKey !== '') {
+      result[config.outputKey] = r ? generate(r) : false;
+    } else {
+      result = r ? generate(r): false;
+    }
+    
 
     if (config.title) {
       var extension = path.extname(file);
