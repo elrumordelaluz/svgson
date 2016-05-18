@@ -2,9 +2,11 @@
   "name": "svgson",
   "version": "1.2.2",
   "description": "Transform svg files to json notation",
-  "main": "index.js",
+  "main": "./lib/svgson.js",
   "scripts": {
-    "test": "node ./tests/index"
+    "bundle": "browserify lib/svgson.js --standalone svgson --ignore svgo -o svgson-bundle.js",
+    "test": "make test",
+    "prepublish": "npm test"
   },
   "repository": {
     "type": "git",
@@ -14,18 +16,30 @@
     "svg",
     "json"
   ],
-  "author": "Lionel T <elrumordelaluz@hotmail.com> (http://elrumordelaluz.com)",
+  "author": {
+    "name": "Lionel",
+    "email": "elrumordelaluz@hotmail.com",
+    "url": "http://elrumordelaluz.com"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/elrumordelaluz/svgson/issues"
   },
   "homepage": "https://github.com/elrumordelaluz/svgson#readme",
   "dependencies": {
-    "async": "^1.5.0",
-    "svgo": "^0.6.1",
-    "xmldom": "^0.1.19"
+    "chalk": "^1.1.3",
+    "commander": "^2.9.0",
+    "fs-promise": "^0.5.0",
+    "htmlparser2": "^3.9.0",
+    "promise": "^7.1.1",
+    "svgo": "^0.6.6"
+  },
+  "bin": {
+    "svgson": "bin/svgson.js"
   },
   "devDependencies": {
-    "tape": "^4.4.0"
+    "browserify": "^13.0.1",
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5"
   }
 }
