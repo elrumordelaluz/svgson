@@ -14,7 +14,7 @@ const list = (val) => val.split(',');
 program
   .version('1.0.0')
   .usage('[options] <keywords>')
-  .option('-i, --input [input]', 'Specifies input folder. Default current')
+  .option('-i, --input [input]', 'Specifies input folder or file. Default current')
   .option('-o, --output [output]', 'Specifies output file. Default ./svgson.json')
   .option('-t, --title', 'Add title from svg filename')
   .option('-P, --prefix <prefix>', 'Remove prefix from title')
