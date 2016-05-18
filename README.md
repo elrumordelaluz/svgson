@@ -1,130 +1,138 @@
-# SVGson [![Build Status](https://travis-ci.org/elrumordelaluz/svgson.svg?branch=master)](https://travis-ci.org/elrumordelaluz/svgson)
+# svgson [![Build Status](https://travis-ci.org/elrumordelaluz/svgson.svg?branch=master)](https://travis-ci.org/elrumordelaluz/svgson)
 
-> Transform `svg` files and Strings into `Object` or `JSON` with useful options
+**SVG**J**SON** is a simple tool to transform `svg` files and Strings into `Object` or `JSON`.
 
-## Install
+> Useful to manipulate `SVG` with `js`, to store in noSQL databses...
+
+### How to use
 
 ```
-$ npm install --save svgson
+$ [sudo] npm install -g svgson
 ```
 
-## Usage
-
-```js
-var svgson = require('svgson');
-var output = svgson('test.svg', { json: true, svgo: true })
 ```
-
-Get this `console.log(output)` output:
-```json
-{
-  "name": "svg",
-  "attrs": {
-    "xmlns": "http://www.w3.org/2000/svg",
-    "width": "64",
-    "height": "64",
-    "viewBox": "0 0 64 64"
-  },
-  "childs": [
-    {
-      "name": "path",
-      "attrs": {
-        "class": "st0",
-        "d": "M48.5 40.2c-1.2-.8-4.2-1.6-6.5 1.3-2.4 2.9-5.3 7.7-16.2-3.2-11-11-6.1-13.9-3.2-16.2 2.9-2.4 2.1-5.3 1.3-6.5-.9-1.3-6-9.2-6.9-10.5-.9-1.3-2.1-3.4-4.9-3C10 2.4 2 6.6 2 15.6s7.1 20 16.8 29.7C28.4 54.9 39.5 62 48.4 62c9 0 13.2-8 13.5-10 .4-2.8-1.7-4-3-4.9-1.3-1-9.2-6.1-10.4-6.9z"
-      }
-    }
-  ]
-}
+$ svgson [options] <keywords>
 ```
 
 ### Options
-- Output Type between Object and JSON. `Boolean` Default: `json: false`
-- Apply [Svgo](https://github.com/svg/svgo) optimization to the `svg` source. `Boolean` Default: `svgo: false`
-- Add custom Svgo [Plugins](https://github.com/svg/svgo#what-it-can-do). `Array` Default: `[ { removeStyleElement: true } ]`
-- Add a general **Title** attribute. If from `file` will be the `filename`, if from `String`, the `title` attribute if exist. `Boolean` Default: `title: false`
-- Add same custom attributes for each item. `Object` Default: `customAttrs: {}`
-- Add a `key` where to encapsulate the output in the `Object` Default: `''`
 
-```js
-var svgson = require('svgson');
+```
+    -h, --help             output usage information
+    -V, --version          output the version number
+    -i, --input [input]    Specifies input folder or file.
+                           Default current folder
+    -o, --output [output]  Specifies output file. Default ./svgson.json
+    -t, --title            Add title from svg filename
+    -P, --prefix <prefix>  Remove prefix from title
+    -S, --suffix <suffix>  Remove suffix from title
+    -k, --key [key]        Specifies a key where include all paths
+    -a, --attrs <attrs>    Custom Attributes: key=value, key=value...
+    -p, --pretty           Prettyfied JSON
+    -s, --svgo             Optimize SVG with SVGO
+```
 
-var options = {
-  json: false,
-  svgo: false,
-  svgoPlugins: [
-    { removeStyleElement: true }
-  ],
-  title: false,
-  customAttrs: {},
-  outputKey: ''
-};
+### Examples
 
-svgson(source, options);
+- `input` current folder | `output` **svgson.json** file
+
+  ```
+  $ svgson
+  ```
+
+- `input` **/svgs** folder | `output` **my-svgs.json** file
+
+  ```
+  $ svgson --input svgs --output my-svgs.json
+  ```
+
+- `input` **myfile.svg** file | `output` **my-file.json** file
+
+  ```
+  $ svgson -i myfile.svg -o my-file.json
+  ```
+
+- Complex example
+  - `input` **/svgs** folder
+  - `output` **svgson.json** file
+  - adds `title` from each file and removes `icon-` prefix
+  - prettifies JSON output
+  - group all _paths_ into the key `myPaths`
+  - adds `{ author: me, foo: bar }` custom attributes per file
+  - optimize output with [svgo](https://github.com/svg/svgo)
+
+  ```
+  $ svgson -i ./svgs --title --prefix icon- --pretty --key myPaths --svgo --attrs author=me,foo=bar
+  ```
+
+### Use as Node Module
+
+```
+$ npm i --save svgson
 ```
 
 ```js
-var svgson = require('svgson');
+const svgson = require('svgson');
 
-// Object
-var out_object = svgson('test.svg');
-
-// JSON
-var out_json = svgson('test.svg', { json: true });
-
-// Object with SVG Optimized
-var out_object_opt = svgson('test.svg', { svgo: true });
-
-// JSON with SVG Optimized
-var out_json_opt = svgson('test.svg', { json: true, svgo: true });
-
-// Object with SVG Optimized with custom plugins
-var out_object_custom = svgson('test.svg', {
-  svgo: true,
-  svgoPlugins: [ { sortAttrs: true } ]
+// From .svg file
+const fs = require('fs');
+fs.readFile('myfile.svg', 'utf-8', function(err, data) {
+  svgson(data, {
+    svgo: true,
+    title: 'myFile',
+    pathsKey: 'myPaths',
+    customAttrs: {
+      foo: true
+    }
+  }, function(result) {
+    console.log(result);
+  });
 });
 
-// JSON with Title
-var out_json_opt = svgson('test.svg', { json: true, title: true });
-
-// JSON with Custom Attributes
-var files = ['test.svg', '/svg/at.svg'];
-var out_json_opt = svgson(files, {
-  json: true,
-  customAttrs: {
-    hello: 'world',
-    generalComment: 'Lorem ipsum dolor sit amet',
-    total: files.length
-  }
-});
-
-// JSON with Output Key Encapsulation
-var out_json_key = svgson('test.svg', { json: true, outputKey: 'myPaths' });
+// From svg String
+const SVG = '<svg width="100" height="100"><circle r="15" stroke-linecap="round" /></svg>';
+svgson(SVG, {}, result => console.log(result));
 
 ```
-### Inputs
-- File path `String`
-- Directory path `String`
-- SVG data `String`
-- Multiple SVG data `Array`
 
-```js
-var svgson = require('svgson');
+### Use in Browser
 
-// Source from single File
-var out_from_file = svgson('test.svg');
+```
+$ npm run bundle
+```
+or
 
-// Source from Directory
-var out_from_dir = svgson('svg');
+```
+$ browserify ./lib/svgson.js --standalone svgson -o svgson-bundle.js
+```
+then in `html` file
 
-// Source from Data
-var str = '<svg><rect height="100" width="100" stroke="#333"/></svg>';
-var out_from_data = svgson(str);
-
-// Source from Multiple Data
-var arr = ['<svg><rect height="100" width="100" stroke="#333"/></svg>', '<svg><rect height="250" width="50" fill="#faa"/></svg>'];
-var out_from_multiple = svgson(arr);
+```html
+<body>
+  <svg viewBox="0 0 100 100" id="mySVG">
+  	<circle cx="50" cy="50" r="48" stroke="red" stroke-width="4"/>
+  </svg>
+  <script src="svgson-bundle.js"></script>
+  <script>
+    svgson(document.querySelector('#mySVG').outerHTML, {
+      title: 'mySVG',
+      pathsKey: 'paths',
+      customAttrs: {
+        a: 123,
+        foo: true,
+        bar: 'baz'
+      }
+    }, function(result) {
+      console.log(result);
+    });
+  </script>
+</body>
 ```
 
-## License
+### Tests
+```
+npm test
+```
+
+### License
 
 MIT © [Lionel T](https://elrumordelaluz.com)
