@@ -31,6 +31,8 @@ $ svgson [options] <keywords>
     -s, --svgo             Optimize SVG with SVGO
 ```
 
+![](example.gif)
+
 ### Examples
 
 - `input` current folder | `output` **svgson.json** file
