@@ -1,6 +1,6 @@
 # svgson [![Build Status](https://travis-ci.org/elrumordelaluz/svgson.svg?branch=master)](https://travis-ci.org/elrumordelaluz/svgson)
 
-![](logo.svg)
+![](https://cdn.rawgit.com/elrumordelaluz/svgson/master/logo.svg)
 
 **SVG**J**SON** is a simple tool to transform `svg` files and Strings into `Object` or `JSON`.
 
@@ -33,7 +33,7 @@ $ svgson [options] <keywords>
     -s, --svgo             Optimize SVG with SVGO
 ```
 
-![](example.gif)
+![](https://cdn.rawgit.com/elrumordelaluz/svgson/master/example.gif)
 
 ### Examples
 
