@@ -1,5 +1,7 @@
 # svgson [![Build Status](https://travis-ci.org/elrumordelaluz/svgson.svg?branch=master)](https://travis-ci.org/elrumordelaluz/svgson)
 
+![](logo.svg)
+
 **SVG**J**SON** is a simple tool to transform `svg` files and Strings into `Object` or `JSON`.
 
 > Useful to manipulate `SVG` with `js`, to store in noSQL databses...
