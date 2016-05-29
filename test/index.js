@@ -9,7 +9,7 @@ const expected = {
   childs: [
     {
       name: 'circle',
-      attrs: { r: '15', 'stroke-linecap': 'round' }
+      attrs: { r: '15', 'strokeLinecap': 'round' }
     }
   ]
 };
