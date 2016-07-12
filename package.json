@@ -1,6 +1,6 @@
 {
   "name": "svgson",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Transform svg files to json notation",
   "main": "./lib/svgson.js",
   "scripts": {
