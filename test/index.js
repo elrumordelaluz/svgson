@@ -88,12 +88,14 @@ describe('svgson', () => {
   it('optimize with svgo and custom plugins', () => {
     svgson(SVG, {
         svgo: true,
-        svgoPlugins: [
-          { removeAttrs: {
-              attrs: '(width|height)'
+        svgoConfig: {
+          plugins: [
+            { removeAttrs: {
+                attrs: '(width|height)'
+              }
             }
-          }
-        ]
+          ]
+        }
       }, res => {
         expect(res).to.eql(expected2);
     });
