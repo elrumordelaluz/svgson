@@ -8,11 +8,11 @@ const path    = require('path');
 const Promise = require('promise');
 const chalk   = require('chalk');
 const svgson  = require('../lib/svgson');
-
+const version = require('../package.json').version
 const list = (val) => val.split(',');
 
 program
-  .version('1.0.0')
+  .version(version)
   .usage('[options] <keywords>')
   .option('-i, --input [input]', 'Specifies input folder or file. Default current')
   .option('-o, --output [output]', 'Specifies output file. Default ./svgson.json')

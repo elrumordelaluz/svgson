@@ -17,6 +17,10 @@ const setRoot = (source) => {
   return source;
 }
 
+const camelCase = (prop) => {
+  return prop.replace(/[-|:]([a-z])/gi, (all, letter) => letter.toUpperCase());
+};
+
 const generate = (source) => {
   const root = setRoot(source);
   let obj = {};
@@ -29,7 +33,12 @@ const generate = (source) => {
     obj.name = root.name;
 
     if (root.attribs) {
-      obj.attrs = root.attribs;
+      obj.attrs = {}
+      for (var attr in root.attribs) {
+        if (root.attribs.hasOwnProperty(attr)) {
+          obj.attrs[camelCase(attr)] = root.attribs[attr]
+        }
+      }
     }
 
     if (root.children) {
@@ -45,11 +54,11 @@ const generate = (source) => {
 }
 
 const optimize = (should, input, plugins, callback) => {
-  should ? new svgo({ plugins }).optimize(input, result => callback(result.data)) : callback(input);
+  should ? new svgo(plugins).optimize(input, result => callback(result.data)) : callback(input);
 };
 
 const parseAndGenerate = (input, callback) => {
-  const dom = htmlparser.parseDOM(input);
+  const dom = htmlparser.parseDOM(input, { xmlMode: true });
   callback(generate(dom), setRoot(dom));
 };
 
@@ -57,13 +66,16 @@ const parseAndGenerate = (input, callback) => {
 module.exports = function (input, options, callback) {
   const initialConfig = {
     svgo: false,
-    svgoPlugins: [
-      { removeStyleElement: true },
-      { removeAttrs: {
-          attrs: '(stroke-width|stroke-linecap|stroke-linejoin)'
+    svgoConfig: {
+      plugins: [
+        { removeStyleElement: true },
+        { removeAttrs: {
+            attrs: '(stroke-width|stroke-linecap|stroke-linejoin)'
+          }
         }
-      }
-    ],
+      ],
+      multipass: true
+    },
     title: null,
     pathsKey: null,
     customAttrs: {},
@@ -80,7 +92,7 @@ module.exports = function (input, options, callback) {
       : Object.assign({}, nod, more);
   };
 
-  return optimize(config.svgo, input, config.svgoPlugins, r => {
+  return optimize(config.svgo, input, config.svgoConfig, r => {
     parseAndGenerate(r, (generated, root) => {
       const isArray = Array.isArray(root);
       const more = config.title ? { title: config.title } : {};
