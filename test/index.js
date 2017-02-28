@@ -2,14 +2,14 @@ const chai = require('chai');
 const expect = chai.expect;
 const svgson = require('../lib/svgson');
 
-const SVG = '<svg viewBox="0 0 100 100" width="100" height="100"><circle r="15" stroke-linecap="round" /></svg>';
+const SVG = '<svg viewBox="0 0 100 100" width="100" height="100"><circle r="15" data-name="stroke" stroke-linecap="round" /></svg>';
 const expected = {
   name: 'svg',
   attrs: { width: '100', height: '100', viewBox: '0 0 100 100' },
   childs: [
     {
       name: 'circle',
-      attrs: { r: '15', 'strokeLinecap': 'round' }
+      attrs: { r: '15', 'data-name': 'stroke', 'strokeLinecap': 'round' }
     }
   ]
 };
@@ -20,7 +20,7 @@ const expected2 = {
   childs: [
     {
       name: 'circle',
-      attrs: { r: '15' }
+      attrs: { r: '15', 'data-name': 'stroke' }
     }
   ]
 };
