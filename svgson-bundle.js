@@ -21,6 +21,8 @@ const camelCase = (prop) => {
   return prop.replace(/[-|:]([a-z])/gi, (all, letter) => letter.toUpperCase());
 };
 
+const isDataAttr = (prop) => /^data(-\w+)/.test(prop)
+
 const generate = (source) => {
   const root = setRoot(source);
   let obj = {};
@@ -36,7 +38,11 @@ const generate = (source) => {
       obj.attrs = {}
       for (var attr in root.attribs) {
         if (root.attribs.hasOwnProperty(attr)) {
-          obj.attrs[camelCase(attr)] = root.attribs[attr]
+          obj.attrs[
+            isDataAttr(attr) 
+            ? attr 
+            : camelCase(attr)
+          ] = root.attribs[attr]
         }
       }
     }
