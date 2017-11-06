@@ -4,6 +4,8 @@
 
 **SVG**J**SON** is a simple tool to transform `svg` files and Strings into `Object` or `JSON`.
 
+Look at [svgson-next](https://github.com/elrumordelaluz/svgson-next) for nexts versions and experiments.
+
 > Useful to manipulate `SVG` with `js`, to store in noSQL databses...
 
 ### How to use
