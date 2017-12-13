@@ -1,12 +1,20 @@
-# svgson [![Build Status](https://travis-ci.org/elrumordelaluz/svgson.svg?branch=master)](https://travis-ci.org/elrumordelaluz/svgson)
+<p align="center">
+  <img alt="svgson" title="svgson" src="/logo.svg" width="450">
+</p>
 
-![](https://cdn.rawgit.com/elrumordelaluz/svgson/master/logo.svg)
+<p align="center">
+  Simple tool to transform <code>svg</code> files and Strings into <code>Object</code> or <code>JSON</code>.
+  Useful to manipulate <code>SVG</code> with <code>js</code>, to store in noSQL databses.
+</p>
 
-**SVG**J**SON** is a simple tool to transform `svg` files and Strings into `Object` or `JSON`.
+<p align="center">
+  <a href="https://travis-ci.org/elrumordelaluz/svgson">
+    <img src="https://travis-ci.org/elrumordelaluz/svgson.svg?branch=master" alt="Build Status">
+  </a>
+</p>
 
-> Useful to manipulate `SVG` with `js`, to store in noSQL databses...
-
-Look at [svgson-next](https://github.com/elrumordelaluz/svgson-next) for nexts versions and experiments.
+<hr>
+Take a look to  [svgson-next](https://github.com/elrumordelaluz/svgson-next) for new versions and experiments.
 
 ### How to use
 
@@ -39,32 +47,33 @@ $ svgson [options] <keywords>
 
 ### Examples
 
-- `input` current folder | `output` **svgson.json** file
+* `input` current folder | `output` **svgson.json** file
 
   ```
   $ svgson
   ```
 
-- `input` **/svgs** folder | `output` **my-svgs.json** file
+* `input` **/svgs** folder | `output` **my-svgs.json** file
 
   ```
   $ svgson --input svgs --output my-svgs.json
   ```
 
-- `input` **myfile.svg** file | `output` **my-file.json** file
+* `input` **myfile.svg** file | `output` **my-file.json** file
 
   ```
   $ svgson -i myfile.svg -o my-file.json
   ```
 
-- Complex example
-  - `input` **/svgs** folder
-  - `output` **svgson.json** file
-  - adds `title` from each file and removes `icon-` prefix
-  - prettifies JSON output
-  - group all _paths_ into the key `myPaths`
-  - adds `{ author: me, foo: bar }` custom attributes per file
-  - optimize output with [svgo](https://github.com/svg/svgo)
+* Complex example
+
+  * `input` **/svgs** folder
+  * `output` **svgson.json** file
+  * adds `title` from each file and removes `icon-` prefix
+  * prettifies JSON output
+  * group all _paths_ into the key `myPaths`
+  * adds `{ author: me, foo: bar }` custom attributes per file
+  * optimize output with [svgo](https://github.com/svg/svgo)
 
   ```
   $ svgson -i ./svgs --title --prefix icon- --pretty --key myPaths --svgo --attrs author=me,foo=bar
@@ -77,27 +86,31 @@ $ npm i --save svgson
 ```
 
 ```js
-const svgson = require('svgson');
+const svgson = require('svgson')
 
 // From .svg file
-const fs = require('fs');
+const fs = require('fs')
 fs.readFile('myfile.svg', 'utf-8', function(err, data) {
-  svgson(data, {
-    svgo: true,
-    title: 'myFile',
-    pathsKey: 'myPaths',
-    customAttrs: {
-      foo: true
+  svgson(
+    data,
+    {
+      svgo: true,
+      title: 'myFile',
+      pathsKey: 'myPaths',
+      customAttrs: {
+        foo: true,
+      },
+    },
+    function(result) {
+      console.log(result)
     }
-  }, function(result) {
-    console.log(result);
-  });
-});
+  )
+})
 
 // From svg String
-const SVG = '<svg width="100" height="100"><circle r="15" stroke-linecap="round" /></svg>';
-svgson(SVG, {}, result => console.log(result));
-
+const SVG =
+  '<svg width="100" height="100"><circle r="15" stroke-linecap="round" /></svg>'
+svgson(SVG, {}, result => console.log(result))
 ```
 
 ### Use in Browser
@@ -105,11 +118,13 @@ svgson(SVG, {}, result => console.log(result));
 ```
 $ npm run bundle
 ```
+
 or
 
 ```
 $ browserify ./lib/svgson.js --standalone svgson -o svgson-bundle.js
 ```
+
 then in `html` file
 
 ```html
@@ -135,6 +150,7 @@ then in `html` file
 ```
 
 ### Tests
+
 ```
 npm test
 ```
