@@ -4,6 +4,8 @@
 
 <p align="center">
   Simple tool to transform <code>svg</code> files and Strings into <code>Object</code> or <code>JSON</code>.
+</p>
+<p align="center">
   Useful to manipulate <code>SVG</code> with <code>js</code>, to store in noSQL databses.
 </p>
 
@@ -13,8 +15,9 @@
   </a>
 </p>
 
-<hr>
-Take a look to  [svgson-next](https://github.com/elrumordelaluz/svgson-next) for new versions and experiments.
+--- 
+
+Take a look to [svgson-next](https://github.com/elrumordelaluz/svgson-next) for new versions and experiments.
 
 ### How to use
 
