@@ -10,6 +10,7 @@ const chalk   = require('chalk');
 const svgson  = require('../lib/svgson');
 const version = require('../package.json').version;
 const list = (val) => val.split(',');
+const tty = require('tty');
 
 program
   .version(version)
@@ -120,7 +121,7 @@ const processFile = (file) => {
   const fileName = path.basename(file, fileExt);
   return new Promise((resolve,reject) => {
     return fs.readFile(filePath, 'utf8').then(data => {
-      if (require('tty').isatty(1)) {
+      if (tty.isatty(1)) {
         process.stdout.cursorTo(0);
         process.stdout.clearLine();
         process.stdout.write(file);
@@ -135,7 +136,7 @@ const toJSON = (obj, pretty) => {
 };
 
 const printFile = (obj) => {
-  if (require('tty').isatty(1)) {
+  if (tty.isatty(1)) {
     process.stdout.clearLine();
     process.stdout.cursorTo(0);
   }
