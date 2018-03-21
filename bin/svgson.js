@@ -8,8 +8,9 @@ const path    = require('path');
 const Promise = require('promise');
 const chalk   = require('chalk');
 const svgson  = require('../lib/svgson');
-const version = require('../package.json').version
+const version = require('../package.json').version;
 const list = (val) => val.split(',');
+const tty = require('tty');
 
 program
   .version(version)
@@ -120,9 +121,11 @@ const processFile = (file) => {
   const fileName = path.basename(file, fileExt);
   return new Promise((resolve,reject) => {
     return fs.readFile(filePath, 'utf8').then(data => {
-      process.stdout.cursorTo(0);
-      process.stdout.clearLine();
-      process.stdout.write(file);
+      if (tty.isatty(1)) {
+        process.stdout.cursorTo(0);
+        process.stdout.clearLine();
+        process.stdout.write(file);
+      }
       svgson(data, applyExtras(fileName), resolve);
     });
   });
@@ -133,8 +136,10 @@ const toJSON = (obj, pretty) => {
 };
 
 const printFile = (obj) => {
-  process.stdout.clearLine();
-  process.stdout.cursorTo(0);
+  if (tty.isatty(1)) {
+    process.stdout.clearLine();
+    process.stdout.cursorTo(0);
+  }
   console.log(`--- ${chalk.yellow('Transforming into')}${program.pretty ? chalk.gray(' Prettyfied') : ''} ${chalk.yellow('JSON notation')}`)
   return toJSON(obj, program.pretty);
 };
