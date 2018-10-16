@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">🚨🚨🚨<br/>
-Take a look into <a href="https://github.com/elrumordelaluz/svgson-next">svgson-next</a> because 🔜 will be the next major version of this <code>svgson</code> with lots of improvements (included droped dependencies, <a href="https://bundlephobia.com/result?p=svgson-next@4.2.0">reduced bundle size</a>, improved transformations, and more…)<br/> 🚨🚨🚨</p>
+Take a look into <a href="https://github.com/elrumordelaluz/svgson-next">svgson-next</a> because 🔜 will be the next major version of <code>svgson</code> with lots of improvements (included droped dependencies, <a href="https://bundlephobia.com/result?p=svgson-next@4.2.0">reduced bundle size</a>, improved transformations, and more…)<br/> 🚨🚨🚨</p>
 
 ### How to use
 
