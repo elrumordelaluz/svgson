@@ -15,9 +15,8 @@
   </a>
 </p>
 
---- 
-
-Take a look to [svgson-next](https://github.com/elrumordelaluz/svgson-next) for new versions and experiments.
+🚨🚨🚨
+Take a look to [svgson-next](https://github.com/elrumordelaluz/svgson-next) because 🔜 will be the next major version of this _Package_ with lots of improvements (droped dependencies, [reduced bundle size](https://bundlephobia.com/result?p=svgson-next@4.2.0), improved transformations, and more…) 🚨🚨🚨
 
 ### How to use
 
@@ -50,33 +49,33 @@ $ svgson [options] <keywords>
 
 ### Examples
 
-* `input` current folder | `output` **svgson.json** file
+- `input` current folder | `output` **svgson.json** file
 
   ```
   $ svgson
   ```
 
-* `input` **/svgs** folder | `output` **my-svgs.json** file
+- `input` **/svgs** folder | `output` **my-svgs.json** file
 
   ```
   $ svgson --input svgs --output my-svgs.json
   ```
 
-* `input` **myfile.svg** file | `output` **my-file.json** file
+- `input` **myfile.svg** file | `output` **my-file.json** file
 
   ```
   $ svgson -i myfile.svg -o my-file.json
   ```
 
-* Complex example
+- Complex example
 
-  * `input` **/svgs** folder
-  * `output` **svgson.json** file
-  * adds `title` from each file and removes `icon-` prefix
-  * prettifies JSON output
-  * group all _paths_ into the key `myPaths`
-  * adds `{ author: me, foo: bar }` custom attributes per file
-  * optimize output with [svgo](https://github.com/svg/svgo)
+  - `input` **/svgs** folder
+  - `output` **svgson.json** file
+  - adds `title` from each file and removes `icon-` prefix
+  - prettifies JSON output
+  - group all _paths_ into the key `myPaths`
+  - adds `{ author: me, foo: bar }` custom attributes per file
+  - optimize output with [svgo](https://github.com/svg/svgo)
 
   ```
   $ svgson -i ./svgs --title --prefix icon- --pretty --key myPaths --svgo --attrs author=me,foo=bar
