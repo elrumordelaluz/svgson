@@ -8,9 +8,6 @@
 <p align="center">
   Useful to manipulate <code>SVG</code> with <code>js</code>, to store in noSQL databses.
 </p>
-<p align="center">
-  This is the new version of <a href="https://github.com/elrumordelaluz/svgson">svgson</a>
-</p>
 
 [![Travis](https://img.shields.io/travis/elrumordelaluz/svgson.svg)](https://travis-ci.org/elrumordelaluz/svgson/)
 [![Codecov](https://img.shields.io/codecov/c/github/elrumordelaluz/svgson.svg)](https://codecov.io/gh/elrumordelaluz/svgson)
