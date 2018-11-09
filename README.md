@@ -18,16 +18,18 @@
 [![Download](https://img.shields.io/npm/dm/svgson.svg)](https://npm-stat.com/charts.html?package=svgsont)
 [![MIT License](https://img.shields.io/npm/l/svgson.svg)](https://opensource.org/licenses/MIT)
 
+For `v2` version go to its [branch](https://github.com/elrumordelaluz/svgson/tree/v2)
+
 ## Install
 
 ```
-yarn add svgson-next
+yarn add svgson
 ```
 
 ## Usage
 
 ```js
-const svgson = require('svgson-next')
+const svgson = require('svgson')
 
 // ----------------------------
 // Convert SVG to JSON AST
