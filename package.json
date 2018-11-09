@@ -23,6 +23,10 @@
     "json",
     "svgo"
   ],
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "author": {
     "name": "Lionel",
     "email": "elrumordelaluz@hotmail.com",
