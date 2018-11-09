@@ -1,5 +1,5 @@
 <p align="center">
-  <img alt="svgson" title="svgson" src="/logo.svg" width="450">
+  <img alt="svgson" title="svgson" src="logo.svg" width="450">
 </p>
 
 <p align="center">
@@ -8,155 +8,151 @@
 <p align="center">
   Useful to manipulate <code>SVG</code> with <code>js</code>, to store in noSQL databses.
 </p>
-
 <p align="center">
-  <a href="https://travis-ci.org/elrumordelaluz/svgson">
-    <img src="https://travis-ci.org/elrumordelaluz/svgson.svg?branch=master" alt="Build Status">
-  </a>
+  This is the new version of <a href="https://github.com/elrumordelaluz/svgson">svgson</a>
 </p>
 
-<p align="center">🚨🚨🚨<br/>
-Take a look into <a href="https://github.com/elrumordelaluz/svgson-next">svgson-next</a> because 🔜 will be the next major version of <code>svgson</code> with lots of improvements (included droped dependencies, <a href="https://bundlephobia.com/result?p=svgson-next@4.2.0">reduced bundle size</a>, improved transformations, and more…)<br/> 🚨🚨🚨</p>
+[![Travis](https://img.shields.io/travis/elrumordelaluz/svgson.svg)](https://travis-ci.org/elrumordelaluz/svgson/)
+[![Codecov](https://img.shields.io/codecov/c/github/elrumordelaluz/svgson.svg)](https://codecov.io/gh/elrumordelaluz/svgson)
+[![Version](https://img.shields.io/npm/v/svgson.svg)](https://www.npmjs.com/package/svgson)
+[![Download](https://img.shields.io/npm/dm/svgson.svg)](https://npm-stat.com/charts.html?package=svgsont)
+[![MIT License](https://img.shields.io/npm/l/svgson.svg)](https://opensource.org/licenses/MIT)
 
-### How to use
-
-```
-$ [sudo] npm install -g svgson
-```
-
-```
-$ svgson [options] <keywords>
-```
-
-### Options
+## Install
 
 ```
-    -h, --help             output usage information
-    -V, --version          output the version number
-    -i, --input [input]    Specifies input folder or file.
-                           Default current folder
-    -o, --output [output]  Specifies output file. Default ./svgson.json
-    -t, --title            Add title from svg filename
-    -P, --prefix <prefix>  Remove prefix from title
-    -S, --suffix <suffix>  Remove suffix from title
-    -k, --key [key]        Specifies a key where include all paths
-    -a, --attrs <attrs>    Custom Attributes: key=value, key=value...
-    -p, --pretty           Prettyfied JSON
-    -s, --svgo             Optimize SVG with SVGO
+yarn add svgson-next
 ```
 
-![](https://cdn.rawgit.com/elrumordelaluz/svgson/master/example.gif)
-
-### Examples
-
-- `input` current folder | `output` **svgson.json** file
-
-  ```
-  $ svgson
-  ```
-
-- `input` **/svgs** folder | `output` **my-svgs.json** file
-
-  ```
-  $ svgson --input svgs --output my-svgs.json
-  ```
-
-- `input` **myfile.svg** file | `output` **my-file.json** file
-
-  ```
-  $ svgson -i myfile.svg -o my-file.json
-  ```
-
-- Complex example
-
-  - `input` **/svgs** folder
-  - `output` **svgson.json** file
-  - adds `title` from each file and removes `icon-` prefix
-  - prettifies JSON output
-  - group all _paths_ into the key `myPaths`
-  - adds `{ author: me, foo: bar }` custom attributes per file
-  - optimize output with [svgo](https://github.com/svg/svgo)
-
-  ```
-  $ svgson -i ./svgs --title --prefix icon- --pretty --key myPaths --svgo --attrs author=me,foo=bar
-  ```
-
-### Use as Node Module
-
-```
-$ npm i --save svgson
-```
+## Usage
 
 ```js
-const svgson = require('svgson')
+const svgson = require('svgson-next')
 
-// From .svg file
-const fs = require('fs')
-fs.readFile('myfile.svg', 'utf-8', function(err, data) {
-  svgson(
-    data,
-    {
-      svgo: true,
-      title: 'myFile',
-      pathsKey: 'myPaths',
-      customAttrs: {
-        foo: true,
-      },
-    },
-    function(result) {
-      console.log(result)
-    }
+// ----------------------------
+// Convert SVG to JSON AST
+// ----------------------------
+svgson
+  .parse(
+    `<svg>
+  <line
+    stroke= "#bada55"
+    stroke-width= "2"
+    stroke-linecap= "round"
+    x1= "70"
+    y1= "80"
+    x2= "250"
+    y2= "150">
+  </line>
+</svg>`
   )
-})
+  .then(function(json) {
+    console.log(JSON.stringify(json, null, 2))
+    /*
+    {
+      name: 'svg',
+      type: 'element',
+      value: '',
+      attributes: {},
+      children: [
+        {
+          name: 'line',
+          type: 'element',
+          value: '',
+          attributes: {
+            stroke: '#bada55',
+            'stroke-width': '2',
+            'stroke-linecap': 'round',
+            x1: '70',
+            y1: '80',
+            x2: '250',
+            y2: '150'
+          },
+          children: []
+        }
+      ]
+    }
+  */
 
-// From svg String
-const SVG =
-  '<svg width="100" height="100"><circle r="15" stroke-linecap="round" /></svg>'
-svgson(SVG, {}, result => console.log(result))
+    // -------------------------------
+    // Convert JSON AST back to SVG
+    // -------------------------------
+    mysvg = svgson.stringify(json)
+    /* returns the SVG as string */
+  })
 ```
 
-### Use in Browser
+Test in browser [here](https://codepen.io/elrumordelaluz/full/XBKedz/)
 
-```
-$ npm run bundle
-```
+# API
 
-or
+## svgson.parse
 
-```
-$ browserify ./lib/svgson.js --standalone svgson -o svgson-bundle.js
+```js
+svgson.parse(input[, options])
 ```
 
-then in `html` file
+Returns: `Promise`
 
-```html
-<body>
-  <svg viewBox="0 0 100 100" id="mySVG">
-  	<circle cx="50" cy="50" r="48" stroke="red" stroke-width="4"/>
-  </svg>
-  <script src="svgson-bundle.js"></script>
-  <script>
-    svgson(document.querySelector('#mySVG').outerHTML, {
-      title: 'mySVG',
-      pathsKey: 'paths',
-      customAttrs: {
-        a: 123,
-        foo: true,
-        bar: 'baz'
-      }
-    }, function(result) {
-      console.log(result);
-    });
-  </script>
-</body>
+- **`input`**
+
+  Type: `String`
+
+- **`options.transformNode`**
+
+  Function to apply on each node when parsing, useful when need to reshape nodes or set default attributes.
+
+  Type: `Function` that returns the node
+
+  Default:
+
+  ```js
+  function(node){
+    return node
+  }
+  ```
+
+- **`options.compat`**
+
+  Use keys from previuos version of `svgson`
+
+  Type: `Boolean`
+
+  Default: `false`
+
+- **`options.camelcase`**
+
+  Apply `camelCase` into attributes
+
+  Type: `Boolean`
+
+  Default: `false`
+
+## svgson.stringify
+
+```js
+svg = svgson.stringify(json)
 ```
 
-### Tests
+- **Pretty Printing**
 
-```
-npm test
-```
+  In order to generate pretty formatted SVG output, use [`pretty` npm module](https://www.npmjs.com/package/pretty):
 
-### License
+  ```js
+  pretty = require('pretty')
+  formatted = pretty(svg)
+  ```
 
-MIT © [Lionel T](https://elrumordelaluz.com)
+# Related
+
+[svgson-cli](https://github.com/elrumordelaluz/svgson-cli) Transform SVG into `Object` from the Command Line
+
+[element-to-path](https://github.com/elrumordelaluz/element-to-path) Convert SVG element into `path`
+
+[path-that-svg](https://github.com/elrumordelaluz/path-that-svg) Convert entire SVG with `path`
+
+[svg-path-tools](https://github.com/elrumordelaluz/svg-path-tools) Tools to manipulate SVG `path` (d)
+
+## License
+
+MIT © [Lionel T](https://lionel.tzatzk.in)

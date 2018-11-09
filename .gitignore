@@ -1,4 +1,7 @@
-# General stuff
+node_modules
+.nyc_output
+coverage
+dist
 *.patch
 *.err
 *.log
@@ -9,12 +12,3 @@
 *~
 ._*
 .env
-
-# sass stuff
-scss-lint-report.xml
-.sass-cache
-
-# folders
-node_modules
-dist
-.idea

@@ -1,12 +1,18 @@
 {
   "name": "svgson",
   "version": "2.1.1",
-  "description": "Transform svg files to json notation",
-  "main": "./lib/svgson.js",
+  "description": "Transform svg files into Objects",
+  "main": "dist/svgson.cjs.js",
+  "module": "dist/svgson.esm.js",
+  "browser": "dist/svgson.umd.js",
   "scripts": {
-    "bundle": "browserify lib/svgson.js --standalone svgson --ignore svgo -o svgson-bundle.js",
-    "test": "make test",
-    "prepublish": "npm test"
+    "prepare": "npm run build",
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "test": "ava",
+    "pretest": "npm run build",
+    "cover": "nyc --reporter=lcov --reporter=text npm t",
+    "report-coverage": "cat ./coverage/lcov.info | codecov"
   },
   "repository": {
     "type": "git",
@@ -14,7 +20,8 @@
   },
   "keywords": [
     "svg",
-    "json"
+    "json",
+    "svgo"
   ],
   "author": {
     "name": "Lionel",
@@ -27,19 +34,52 @@
   },
   "homepage": "https://github.com/elrumordelaluz/svgson#readme",
   "dependencies": {
-    "chalk": "^1.1.3",
-    "commander": "^2.9.0",
-    "fs-promise": "^0.5.0",
-    "htmlparser2": "^3.9.0",
-    "promise": "^7.1.1",
-    "svgo": "^0.6.6"
-  },
-  "bin": {
-    "svgson": "bin/svgson.js"
+    "clean-deep": "3.0.2",
+    "deep-rename-keys": "^0.2.1",
+    "omit-deep": "0.3.0",
+    "xml-reader": "2.4.3"
   },
   "devDependencies": {
-    "browserify": "^13.0.1",
-    "chai": "^3.5.0",
-    "mocha": "^2.4.5"
+    "@babel/core": "7.1.2",
+    "@babel/plugin-proposal-object-rest-spread": "7.0.0",
+    "@babel/preset-env": "7.1.0",
+    "ava": "0.25.0",
+    "babel-preset-es2015": "6.24.1",
+    "babel-preset-stage-2": "6.24.1",
+    "chai": "4.2.0",
+    "codecov.io": "0.1.6",
+    "nyc": "13.1.0",
+    "rollup": "0.67.0",
+    "rollup-plugin-babel": "4.0.3",
+    "rollup-plugin-commonjs": "9.2.0",
+    "rollup-plugin-node-resolve": "3.4.0",
+    "svgo": "1.1.1",
+    "svgson": "2.1.1"
+  },
+  "nyc": {
+    "lines": 90,
+    "statements": 90,
+    "functions": 70,
+    "branches": 70,
+    "check-coverage": true,
+    "exclude": [
+      "**/*.test.js"
+    ]
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/env",
+        {
+          "modules": false
+        }
+      ]
+    ],
+    "plugins": [
+      "@babel/plugin-proposal-object-rest-spread"
+    ]
+  },
+  "xo": {
+    "esnext": true
   }
 }
