@@ -16,12 +16,12 @@
 </p>
 
 <p align="center">🚨🚨🚨<br/>
-Take a look into <a href="https://github.com/elrumordelaluz/svgson-next">svgson-next</a> because 🔜 will be the next major version of <code>svgson</code> with lots of improvements (included droped dependencies, <a href="https://bundlephobia.com/result?p=svgson-next@4.2.0">reduced bundle size</a>, improved transformations, and more…)<br/> 🚨🚨🚨</p>
+This is the `v2` branch, for the latest version take a look into <a href="https://github.com/elrumordelaluz/svgson">master</a>.</p>
 
 ### How to use
 
 ```
-$ [sudo] npm install -g svgson
+$ [sudo] npm install -g svgson@2
 ```
 
 ```
@@ -132,21 +132,25 @@ then in `html` file
 ```html
 <body>
   <svg viewBox="0 0 100 100" id="mySVG">
-  	<circle cx="50" cy="50" r="48" stroke="red" stroke-width="4"/>
+    <circle cx="50" cy="50" r="48" stroke="red" stroke-width="4" />
   </svg>
   <script src="svgson-bundle.js"></script>
   <script>
-    svgson(document.querySelector('#mySVG').outerHTML, {
-      title: 'mySVG',
-      pathsKey: 'paths',
-      customAttrs: {
-        a: 123,
-        foo: true,
-        bar: 'baz'
+    svgson(
+      document.querySelector('#mySVG').outerHTML,
+      {
+        title: 'mySVG',
+        pathsKey: 'paths',
+        customAttrs: {
+          a: 123,
+          foo: true,
+          bar: 'baz',
+        },
+      },
+      function(result) {
+        console.log(result)
       }
-    }, function(result) {
-      console.log(result);
-    });
+    )
   </script>
 </body>
 ```
