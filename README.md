@@ -9,11 +9,25 @@
   Useful to manipulate <code>SVG</code> with <code>js</code>, to store in noSQL databses.
 </p>
 
-[![Travis](https://img.shields.io/travis/elrumordelaluz/svgson.svg)](https://travis-ci.org/elrumordelaluz/svgson/)
-[![Codecov](https://img.shields.io/codecov/c/github/elrumordelaluz/svgson.svg)](https://codecov.io/gh/elrumordelaluz/svgson)
-[![Version](https://img.shields.io/npm/v/svgson.svg)](https://www.npmjs.com/package/svgson)
-[![Download](https://img.shields.io/npm/dm/svgson.svg)](https://npm-stat.com/charts.html?package=svgsont)
-[![MIT License](https://img.shields.io/npm/l/svgson.svg)](https://opensource.org/licenses/MIT)
+<br/>
+
+<p align="center">
+  <a href="https://travis-ci.org/elrumordelaluz/svgson/">
+    <img src="https://img.shields.io/travis/elrumordelaluz/svgson.svg" alt="Travis">
+  </a>
+  <a href="https://codecov.io/gh/elrumordelaluz/svgson">
+    <img src="https://img.shields.io/codecov/c/github/elrumordelaluz/svgson.svg" alt="Codecov">
+  </a>
+  <a href="https://www.npmjs.com/package/svgson">
+    <img src="https://img.shields.io/npm/v/svgson.svg" alt="Version">
+  </a>
+  <a href="https://npm-stat.com/charts.html?package=svgsont">
+    <img src="https://img.shields.io/npm/dm/svgson.svg" alt="Download">
+  </a>
+  <a href="https://opensource.org/licenses/MIT">
+    <img src="https://img.shields.io/npm/l/svgson.svg" alt="MIT License">
+  </a>
+</p>
 
 For `v2` version go to its [branch](https://github.com/elrumordelaluz/svgson/tree/v2)
 
