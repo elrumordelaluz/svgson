@@ -144,8 +144,36 @@ Returns: `Promise`
 ## svgson.stringify
 
 ```js
-svg = svgson.stringify(json)
+svg = svgson.stringify(ast[, options])
 ```
+
+Returns: `String`
+
+- **`ast`**
+
+  `svgson` parsed result.
+
+  Type: `Object` `[Object]`
+
+- **`options.transformAttr`**
+
+  Function to apply on each attribute when stringifying.
+
+  Type: `Function` that returns the key/attribute string with the ability to use the [escape](https://github.com/elrumordelaluz/svgson/blob/master/src/tools.js#L73-L80) function on it.
+
+  Default:
+
+  ```js
+  function(key, value, escape) {
+    return `${key}="${escape(value)}"`
+  }
+  ```
+
+- **`options.selfClose`**
+
+  Type: `Boolean`
+
+  Default: `true`
 
 - **Pretty Printing**
 
