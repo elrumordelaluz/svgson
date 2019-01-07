@@ -29,7 +29,7 @@
   </a>
 </p>
 
-For `v2` version go to its [branch](https://github.com/elrumordelaluz/svgson/tree/v2)
+[`v2` docs](https://github.com/elrumordelaluz/svgson/tree/v2)
 
 ## Install
 
