@@ -29,37 +29,34 @@
   </a>
 </p>
 
-For `v2` version go to its [branch](https://github.com/elrumordelaluz/svgson/tree/v2)
+[`v2` docs](https://github.com/elrumordelaluz/svgson/tree/v2)
 
 ## Install
 
-```
+```bash
 yarn add svgson
 ```
 
 ## Usage
 
 ```js
-const svgson = require('svgson')
+const svgson, { stringify } = require('svgson')
 
 // ----------------------------
 // Convert SVG to JSON AST
 // ----------------------------
-svgson
-  .parse(
-    `<svg>
-  <line
-    stroke= "#bada55"
-    stroke-width= "2"
-    stroke-linecap= "round"
-    x1= "70"
-    y1= "80"
-    x2= "250"
-    y2= "150">
-  </line>
-</svg>`
-  )
-  .then(function(json) {
+svgson(`
+  <svg>
+    <line
+      stroke= "#bada55"
+      stroke-width= "2"
+      stroke-linecap= "round"
+      x1= "70"
+      y1= "80"
+      x2= "250"
+      y2= "150">
+    </line>
+  </svg>`).then(json => {
     console.log(JSON.stringify(json, null, 2))
     /*
     {
@@ -90,10 +87,40 @@ svgson
     // -------------------------------
     // Convert JSON AST back to SVG
     // -------------------------------
-    mysvg = svgson.stringify(json)
+    const mysvg = stringify(json)
     /* returns the SVG as string */
   })
 ```
+
+<p>
+<details>
+  <summary><code>umd</code> usage</summary>
+<p>
+      <pre lang=js>
+const svgson = require('svgson')
+svgson
+  .parse(
+    `&lt;svg&gt;
+      &lt;line
+        stroke= "#bada55"
+        stroke-width= "2"
+        stroke-linecap= "round"
+        x1= "70"
+        y1= "80"
+        x2= "250"
+        y2= "150"&gt;
+      &lt;/line&gt;
+    &lt;/svg&gt;`
+  )
+  .then(function(json) {
+    console.log(JSON.stringify(json, null, 2)
+  )
+&nbsp;
+mysvg = svgson.stringify(json)
+  </pre>
+</p>
+</details>
+</p>
 
 Test in browser [here](https://codepen.io/elrumordelaluz/full/XBKedz/)
 
