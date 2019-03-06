@@ -16,7 +16,7 @@ export const parseInput = input => {
     if (isValid) {
       resolve(hasMoreChildren ? parsed : parsed.children[0])
     } else {
-      reject('nothing to parse')
+      reject(Error('nothing to parse'))
     }
   })
 }

@@ -164,11 +164,11 @@ const expectedMultiple = [
 ]
 
 test('Fullfill a Promise', async t => {
-  await t.notThrows(svgson(SVG))
+  await t.notThrowsAsync(() => svgson(SVG))
 })
 
 test('Reject a Promise', async t => {
-  await t.throws(svgson('abc'))
+  await t.throwsAsync(() => svgson('abc'))
 })
 
 test('Returns an Array when input is more than one SVG', async t => {
