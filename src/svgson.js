@@ -7,15 +7,18 @@ import {
   applyCompat,
 } from './tools'
 
-const svgson = function svgson(
+export const svgsonSync = function svgsonSync(
   input,
   { transformNode = node => node, compat = false, camelcase = false } = {}
 ) {
-  const wrapper = input => {
+  const wrap = input => {
     const cleanInput = removeDoctype(input)
     return wrapInput(cleanInput)
   }
-  const parser = input => parseInput(input)
+
+  const unwrap = res => {
+    return res.name === 'root' ? res.children : res
+  }
 
   const applyFilters = input => {
     const applyTransformNode = node => {
@@ -23,15 +26,15 @@ const svgson = function svgson(
       return node.name === 'root'
         ? children.map(applyTransformNode)
         : {
-            ...transformNode(node),
-            ...(children && children.length > 0
-              ? {
-                  [compat ? 'childs' : 'children']: children.map(
-                    applyTransformNode
-                  ),
-                }
-              : {}),
-          }
+          ...transformNode(node),
+          ...(children && children.length > 0
+            ? {
+              [compat ? 'childs' : 'children']: children.map(
+                applyTransformNode
+              ),
+            }
+            : {}),
+        }
     }
     let n
     n = removeAttrs(input)
@@ -42,13 +45,19 @@ const svgson = function svgson(
     if (camelcase || compat) {
       n = camelize(n)
     }
-    return Promise.resolve(n)
+    return n
   }
 
-  return wrapper(input)
-    .then(parser)
-    .then(applyFilters)
-    .then(res => (res.name === 'root' ? res.children : res))
+  return unwrap(applyFilters(parseInput(wrap(input))))
 }
 
-export default svgson
+export default function svgson(...args) {
+  return new Promise((resolve, reject) => {
+    try {
+      const res = svgsonSync(...args)
+      resolve(res)
+    } catch (e) {
+      reject(e)
+    }
+  })
+}

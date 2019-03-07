@@ -12,19 +12,17 @@ export const parseInput = input => {
       }, false)
     : parsed.children[0].name === 'svg'
 
-  return new Promise((resolve, reject) => {
-    if (isValid) {
-      resolve(hasMoreChildren ? parsed : parsed.children[0])
-    } else {
-      reject(Error('nothing to parse'))
-    }
-  })
+  if (isValid) {
+    return hasMoreChildren ? parsed : parsed.children[0]
+  } else {
+    throw Error('nothing to parse')
+  }
 }
 
 export const removeDoctype = input => {
   return input.replace(/<[\/]{0,1}(\!?DOCTYPE|\??xml)[^><]*>/gi, '')
 }
-export const wrapInput = input => Promise.resolve(`<root>${input}</root>`)
+export const wrapInput = input => `<root>${input}</root>`
 
 export const removeAttrs = obj => omitDeep(obj, ['parent'])
 
