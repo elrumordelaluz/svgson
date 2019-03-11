@@ -1,5 +1,5 @@
 import test from 'ava'
-import svgson, { stringify } from './dist/svgson.cjs'
+import svgson, { stringify, parseSync } from './dist/svgson.cjs'
 import _svgson from 'svgson'
 import svgo from 'svgo'
 import { expect } from 'chai'
@@ -231,6 +231,34 @@ test.cb('Works in compat mode', t => {
       t.end()
     })
   })
+})
+
+test('Sync mode works', async t => {
+  const resSync = parseSync(SVG);
+  const res = await svgson(SVG);
+
+  t.deepEqual(res, resSync)
+})
+
+test('Sync mode adds custom attributes via transformNode', async t => {
+  const options = {
+    transformNode: node => ({
+      tag: node.name,
+      props: node.attributes,
+      ...(node.children && node.children.length > 0
+        ? { children: node.children }
+        : {}),
+    }),
+  }
+
+  const resSync = parseSync(SVG, options);
+  const res = await svgson(SVG, options);
+
+  t.deepEqual(res, resSync)
+})
+
+test('Sync mode throws', t => {
+  t.throws(() => parseSync('abc'))
 })
 
 test.cb('Applies camelCase', t => {
