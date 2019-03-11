@@ -168,6 +168,18 @@ Returns: `Promise`
 
   Default: `false`
 
+## svgson.parseSync
+
+> Added in `3.1.0`
+
+```js
+svgson.parseSync(input[, options])
+```
+
+This function is a synchronous version of [`svgson.parse`](#svgsonparse). The arguments are the same, but unlike `svgson.parse`, the return value is not wrapped in a `Promise`.
+
+Returns: `Object` `[Object]`
+
 ## svgson.stringify
 
 ```js
