@@ -40,12 +40,12 @@ yarn add svgson
 ## Usage
 
 ```js
-const svgson, { stringify } = require('svgson')
+const { parse, stringify } = require('svgson')
 
 // ----------------------------
 // Convert SVG to JSON AST
 // ----------------------------
-svgson(`
+parse(`
   <svg>
     <line
       stroke= "#bada55"
@@ -57,8 +57,8 @@ svgson(`
       y2= "150">
     </line>
   </svg>`).then(json => {
-    console.log(JSON.stringify(json, null, 2))
-    /*
+  console.log(JSON.stringify(json, null, 2))
+  /*
     {
       name: 'svg',
       type: 'element',
@@ -84,12 +84,12 @@ svgson(`
     }
   */
 
-    // -------------------------------
-    // Convert JSON AST back to SVG
-    // -------------------------------
-    const mysvg = stringify(json)
-    /* returns the SVG as string */
-  })
+  // -------------------------------
+  // Convert JSON AST back to SVG
+  // -------------------------------
+  const mysvg = stringify(json)
+  /* returns the SVG as string */
+})
 ```
 
 <p>
