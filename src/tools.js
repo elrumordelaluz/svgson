@@ -1,6 +1,5 @@
 import omitDeep from 'omit-deep'
 import rename from 'deep-rename-keys'
-import clean from 'clean-deep'
 import { parseSync } from 'xml-reader'
 
 export const parseInput = input => {
@@ -30,19 +29,6 @@ export const addCustomAttrs = (attrs, node) => ({
   ...node,
   ...attrs,
 })
-
-export const applyCompat = node => {
-  const renamed = rename(node, key => {
-    if (key === 'attributes') {
-      return 'attrs'
-    }
-    if (key === 'children') {
-      return 'childs'
-    }
-    return key
-  })
-  return omitDeep(clean(renamed), ['type'])
-}
 
 export const camelize = node => {
   return rename(node, key => {

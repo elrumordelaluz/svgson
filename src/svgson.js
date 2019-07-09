@@ -4,12 +4,11 @@ import {
   removeDoctype,
   removeAttrs,
   camelize,
-  applyCompat,
 } from './tools'
 
 export const svgsonSync = function svgsonSync(
   input,
-  { transformNode = node => node, compat = false, camelcase = false } = {}
+  { transformNode = node => node, camelcase = false } = {}
 ) {
   const wrap = input => {
     const cleanInput = removeDoctype(input)
@@ -22,27 +21,22 @@ export const svgsonSync = function svgsonSync(
 
   const applyFilters = input => {
     const applyTransformNode = node => {
-      const children = compat ? node.childs : node.children
+      const children = node.children
       return node.name === 'root'
         ? children.map(applyTransformNode)
         : {
-          ...transformNode(node),
-          ...(children && children.length > 0
-            ? {
-              [compat ? 'childs' : 'children']: children.map(
-                applyTransformNode
-              ),
-            }
-            : {}),
-        }
+            ...transformNode(node),
+            ...(children && children.length > 0
+              ? {
+                  children: children.map(applyTransformNode),
+                }
+              : {}),
+          }
     }
     let n
     n = removeAttrs(input)
-    if (compat) {
-      n = applyCompat(n)
-    }
     n = applyTransformNode(n)
-    if (camelcase || compat) {
+    if (camelcase) {
       n = camelize(n)
     }
     return n

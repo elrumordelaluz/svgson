@@ -29,13 +29,7 @@ export default [
   // the `targets` option which can specify `dest` and `format`)
   {
     input: 'src/index-es.js',
-    external: [
-      'clean-deep',
-      'deep-rename-keys',
-      'omit-deep',
-      'xml-printer',
-      'xml-reader',
-    ],
+    external: ['deep-rename-keys', 'omit-deep', 'xml-printer', 'xml-reader'],
     plugins: [
       babel({
         exclude: ['node_modules/**'],

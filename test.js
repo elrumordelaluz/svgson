@@ -176,11 +176,6 @@ test('Returns an Array when input is more than one SVG', async t => {
   t.true(Array.isArray(res))
 })
 
-test('Works with Array and compat mode', async t => {
-  const res = await svgson(MULTIPLE_SVG, { compat: true })
-  t.true(Array.isArray(res))
-})
-
 test('Resulted nodes has basic keys', async t => {
   const res = await svgson(SVG)
   const keys = Object.keys(res)
@@ -224,18 +219,9 @@ test('Adds custom attributes via transformNode', async t => {
   t.deepEqual(res, expectedTransformed)
 })
 
-test.cb('Works in compat mode', t => {
-  svgson(SVG, { compat: true }).then(res => {
-    _svgson(SVG, {}, old => {
-      t.deepEqual(res, old)
-      t.end()
-    })
-  })
-})
-
 test('Sync mode works', async t => {
-  const resSync = parseSync(SVG);
-  const res = await svgson(SVG);
+  const resSync = parseSync(SVG)
+  const res = await svgson(SVG)
 
   t.deepEqual(res, resSync)
 })
@@ -251,8 +237,8 @@ test('Sync mode adds custom attributes via transformNode', async t => {
     }),
   }
 
-  const resSync = parseSync(SVG, options);
-  const res = await svgson(SVG, options);
+  const resSync = parseSync(SVG, options)
+  const res = await svgson(SVG, options)
 
   t.deepEqual(res, resSync)
 })

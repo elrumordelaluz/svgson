@@ -38,7 +38,6 @@
   },
   "homepage": "https://github.com/elrumordelaluz/svgson#readme",
   "dependencies": {
-    "clean-deep": "3.0.2",
     "deep-rename-keys": "^0.2.1",
     "omit-deep": "0.3.0",
     "xml-reader": "2.4.3"
