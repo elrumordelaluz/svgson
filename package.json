@@ -5,6 +5,7 @@
   "main": "dist/svgson.cjs.js",
   "module": "dist/svgson.esm.js",
   "browser": "dist/svgson.umd.js",
+  "types": "types.d.ts",
   "scripts": {
     "prepare": "npm run build",
     "build": "rollup -c",
@@ -25,6 +26,7 @@
   ],
   "files": [
     "dist",
+    "types.d.ts",
     "README.md"
   ],
   "author": {
