@@ -1,10 +1,11 @@
 {
   "name": "svgson",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Transform svg files into Objects",
   "main": "dist/svgson.cjs.js",
   "module": "dist/svgson.esm.js",
   "browser": "dist/svgson.umd.js",
+  "types": "types.d.ts",
   "scripts": {
     "prepare": "npm run build",
     "build": "rollup -c",
@@ -25,6 +26,7 @@
   ],
   "files": [
     "dist",
+    "types.d.ts",
     "README.md"
   ],
   "author": {
