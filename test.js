@@ -1,8 +1,7 @@
-import test from 'ava'
-import svgson, { stringify, parseSync } from './dist/svgson.cjs'
-import _svgson from 'svgson'
-import svgo from 'svgo'
-import { expect } from 'chai'
+const test = require('ava')
+const { default: svgson, stringify, parseSync } = require('./dist/svgson.cjs')
+const svgo = require('svgo')
+const { expect } = require('chai')
 
 const svgoDefaultConfig = {
   plugins: [
@@ -163,20 +162,20 @@ const expectedMultiple = [
   },
 ]
 
-test('Fullfill a Promise', async t => {
+test('Fullfill a Promise', async (t) => {
   await t.notThrowsAsync(() => svgson(SVG))
 })
 
-test('Reject a Promise', async t => {
+test('Reject a Promise', async (t) => {
   await t.throwsAsync(() => svgson('abc'))
 })
 
-test('Returns an Array when input is more than one SVG', async t => {
+test('Returns an Array when input is more than one SVG', async (t) => {
   const res = await svgson(MULTIPLE_SVG)
   t.true(Array.isArray(res))
 })
 
-test('Resulted nodes has basic keys', async t => {
+test('Resulted nodes has basic keys', async (t) => {
   const res = await svgson(SVG)
   const keys = Object.keys(res)
   t.true(keys.includes('type'))
@@ -185,13 +184,13 @@ test('Resulted nodes has basic keys', async t => {
   t.true(keys.includes('children'))
 })
 
-test('Optimize using default config', async t => {
+test('Optimize using default config', async (t) => {
   const optimized = await optimizeSVG(SVG, svgoDefaultConfig)
   const res = await svgson(optimized)
   t.deepEqual(res, expectedOptimized[0])
 })
 
-test('Optimize using custom config', async t => {
+test('Optimize using custom config', async (t) => {
   const optimized = await optimizeSVG(SVG, {
     plugins: [
       {
@@ -205,9 +204,9 @@ test('Optimize using custom config', async t => {
   t.deepEqual(res, expectedOptimized[1])
 })
 
-test('Adds custom attributes via transformNode', async t => {
+test('Adds custom attributes via transformNode', async (t) => {
   const res = await svgson(SVG, {
-    transformNode: node => ({
+    transformNode: (node) => ({
       tag: node.name,
       props: node.attributes,
       ...(node.children && node.children.length > 0
@@ -219,16 +218,16 @@ test('Adds custom attributes via transformNode', async t => {
   t.deepEqual(res, expectedTransformed)
 })
 
-test('Sync mode works', async t => {
+test('Sync mode works', async (t) => {
   const resSync = parseSync(SVG)
   const res = await svgson(SVG)
 
   t.deepEqual(res, resSync)
 })
 
-test('Sync mode adds custom attributes via transformNode', async t => {
+test('Sync mode adds custom attributes via transformNode', async (t) => {
   const options = {
-    transformNode: node => ({
+    transformNode: (node) => ({
       tag: node.name,
       props: node.attributes,
       ...(node.children && node.children.length > 0
@@ -243,14 +242,14 @@ test('Sync mode adds custom attributes via transformNode', async t => {
   t.deepEqual(res, resSync)
 })
 
-test('Sync mode throws', t => {
+test('Sync mode throws', (t) => {
   t.throws(() => parseSync('abc'))
 })
 
-test.cb('Applies camelCase', t => {
+test.cb('Applies camelCase', (t) => {
   svgson(SVG, {
     camelcase: true,
-  }).then(res => {
+  }).then((res) => {
     const childrenAttrs = res.children[0].attributes
     expect(childrenAttrs).to.deep.include.keys('strokeLinecap', 'data-name')
     expect(childrenAttrs).to.have.property('strokeLinecap', 'round')
@@ -259,12 +258,12 @@ test.cb('Applies camelCase', t => {
   })
 })
 
-test('Stringify', async t => {
+test('Stringify', async (t) => {
   const res = await svgson(SVG)
   t.is(SVG, stringify(res))
 })
 
-test('Stringify using transformAttr', async t => {
+test('Stringify using transformAttr', async (t) => {
   const res = await svgson(SVG2)
   t.is(
     SVG2,
@@ -278,7 +277,7 @@ test('Stringify using transformAttr', async t => {
   )
 })
 
-const unescapeAttr = attr => {
+const unescapeAttr = (attr) => {
   return String(attr)
     .replace(/&amp;/g, '&')
     .replace(/&apos;/g, "'")
@@ -287,9 +286,9 @@ const unescapeAttr = attr => {
     .replace(/&gt;/g, '>')
 }
 
-test('Parsing and Stringify attributes', async t => {
+test('Parsing and Stringify attributes', async (t) => {
   const res = await svgson(SVG2, {
-    transformNode: node => {
+    transformNode: (node) => {
       if (node.attributes['data-custom-data']) {
         node.attributes['data-custom-data'] = JSON.parse(
           unescapeAttr(node.attributes['data-custom-data'])
@@ -309,7 +308,7 @@ test('Parsing and Stringify attributes', async t => {
   )
 })
 
-test('Stringify using transformAttr to remove Attributes conditionally', async t => {
+test('Stringify using transformAttr to remove Attributes conditionally', async (t) => {
   const res = await svgson(SVG)
   t.is(
     SVG_WITHOUT_WH,
@@ -323,7 +322,7 @@ test('Stringify using transformAttr to remove Attributes conditionally', async t
   )
 })
 
-test('Works with doctype', async t => {
+test('Works with doctype', async (t) => {
   const svg = `<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
