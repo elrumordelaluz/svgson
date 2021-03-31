@@ -56,7 +56,7 @@ parse(`
       x2= "250"
       y2= "150">
     </line>
-  </svg>`).then(json => {
+  </svg>`).then((json) => {
   console.log(JSON.stringify(json, null, 2))
   /*
     {
@@ -151,14 +151,6 @@ Returns: `Promise`
     return node
   }
   ```
-
-- **`options.compat`**
-
-  Use keys from previuos version of `svgson`
-
-  Type: `Boolean`
-
-  Default: `false`
 
 - **`options.camelcase`**
 
