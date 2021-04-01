@@ -8,34 +8,21 @@ import {
 
 export const svgsonSync = function svgsonSync(
   input,
-  { transformNode = node => node, camelcase = false } = {}
+  { transformNode = (node) => node, camelcase = false } = {}
 ) {
-  const wrap = input => {
+  const wrap = (input) => {
     const cleanInput = removeDoctype(input)
     return wrapInput(cleanInput)
   }
 
-  const unwrap = res => {
+  const unwrap = (res) => {
     return res.name === 'root' ? res.children : res
   }
 
-  const applyFilters = input => {
-    const applyTransformNode = node => {
-      const children = node.children
-      return node.name === 'root'
-        ? children.map(applyTransformNode)
-        : {
-            ...transformNode(node),
-            ...(children && children.length > 0
-              ? {
-                  children: children.map(applyTransformNode),
-                }
-              : {}),
-          }
-    }
+  const applyFilters = (input) => {
     let n
     n = removeAttrs(input)
-    n = applyTransformNode(n)
+    n = transformNode(n)
     if (camelcase) {
       n = camelize(n)
     }

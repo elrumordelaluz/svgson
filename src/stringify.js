@@ -1,15 +1,20 @@
 import { escapeText, escapeAttr } from './tools'
 
 const stringify = (
-  ast,
+  _ast,
   {
     transformAttr = (key, value, escape) => `${key}="${escape(value)}"`,
+    transformNode = (node) => node,
     selfClose = true,
   } = {}
 ) => {
-  if (Array.isArray(ast)) {
-    return ast.map(ast => stringify(ast, { transformAttr, selfClose })).join('')
+  if (Array.isArray(_ast)) {
+    return _ast
+      .map((ast) => stringify(ast, { transformAttr, selfClose, transformNode }))
+      .join('')
   }
+
+  let ast = transformNode(_ast)
 
   if (ast.type === 'text') {
     return escapeText(ast.value)
@@ -26,9 +31,10 @@ const stringify = (
     attributes += attrStr ? ` ${attrStr}` : ''
   }
 
-  return ast.children.length || !selfClose
+  return (ast.children && ast.children.length > 0) || !selfClose
     ? `<${ast.name}${attributes}>${stringify(ast.children, {
         transformAttr,
+        transformNode,
         selfClose,
       })}</${ast.name}>`
     : `<${ast.name}${attributes}/>`

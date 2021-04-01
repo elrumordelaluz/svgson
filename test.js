@@ -1,6 +1,7 @@
 const test = require('ava')
 const { default: svgson, stringify, parseSync } = require('./dist/svgson.cjs')
 const svgo = require('svgo')
+const transform = require('lodash.transform')
 const { expect } = require('chai')
 
 const svgoDefaultConfig = {
@@ -38,21 +39,21 @@ const MULTIPLE_SVG = `
 <circle r="15" data-name="second" stroke-linecap="round"/>
 </svg>
 `
-const expected = {
+
+const expectedCompat = {
   type: 'element',
   name: 'svg',
-  attributes: { width: '100', height: '100', viewBox: '0 0 100 100' },
+  attrs: { viewBox: '0 0 100 100', width: '100', height: '100' },
   value: '',
-  children: [
+  childs: [
     {
       type: 'element',
       name: 'circle',
-      attributes: {
+      attrs: {
         r: '15',
         'data-name': 'stroke',
         'stroke-linecap': 'round',
       },
-      children: [],
       value: '',
     },
   ],
@@ -106,62 +107,6 @@ const expectedOptimized = [
   },
 ]
 
-const expectedMultiple = [
-  {
-    name: 'svg',
-    type: 'element',
-    value: '',
-    attributes: { viewBox: '0 0 100 100', width: '100', height: '100' },
-    children: [
-      {
-        name: 'circle',
-        type: 'element',
-        value: '',
-        attributes: {
-          r: '15',
-          'stroke-linecap': 'round',
-          'data-name': 'first',
-        },
-        children: [],
-      },
-    ],
-  },
-  {
-    name: 'svg',
-    type: 'element',
-    value: '',
-    attributes: { viewBox: '0 0 50 50', width: '50', height: '50' },
-    children: [
-      {
-        name: 'title',
-        type: 'element',
-        value: '',
-        attributes: {},
-        children: [
-          {
-            name: '',
-            type: 'text',
-            value: 'Second SVG',
-            attributes: {},
-            children: [],
-          },
-        ],
-      },
-      {
-        name: 'circle',
-        type: 'element',
-        value: '',
-        attributes: {
-          r: '15',
-          'stroke-linecap': 'round',
-          'data-name': 'second',
-        },
-        children: [],
-      },
-    ],
-  },
-]
-
 test('Fullfill a Promise', async (t) => {
   await t.notThrowsAsync(() => svgson(SVG))
 })
@@ -204,18 +149,47 @@ test('Optimize using custom config', async (t) => {
   t.deepEqual(res, expectedOptimized[1])
 })
 
+function deepTransform(obj, iterator) {
+  return transform(obj, (acc, val, key) => {
+    const [k, v] = iterator(key, val)
+    if (k === undefined) return
+    acc[k] =
+      typeof v === 'object' && v !== null ? deepTransform(v, iterator) : v
+  })
+}
+
 test('Adds custom attributes via transformNode', async (t) => {
   const res = await svgson(SVG, {
-    transformNode: (node) => ({
-      tag: node.name,
-      props: node.attributes,
-      ...(node.children && node.children.length > 0
-        ? { children: node.children }
-        : {}),
-    }),
+    transformNode: (node) =>
+      deepTransform(node, (key, value) => {
+        if (key === 'name') return ['tag', value]
+        if (key === 'attributes') return ['props', value]
+        if (key === 'type') return []
+        if (key === 'value') return []
+        if (key === 'children' && value.length === 0) return []
+        return [key, value]
+      }),
   })
-
   t.deepEqual(res, expectedTransformed)
+})
+
+test('compat mode via transformNode', async (t) => {
+  const res = await svgson(SVG, {
+    transformNode: (node) => {
+      return deepTransform(node, (key, value) => {
+        if (key === 'attributes') return ['attrs', value]
+        if (key === 'children') {
+          if (value.length === 0) {
+            return []
+          } else {
+            return ['childs', value]
+          }
+        }
+        return [key, value]
+      })
+    },
+  })
+  t.deepEqual(res, expectedCompat)
 })
 
 test('Sync mode works', async (t) => {
@@ -286,16 +260,29 @@ const unescapeAttr = (attr) => {
     .replace(/&gt;/g, '>')
 }
 
+test('Stringify compat mode via transformNode', async (t) => {
+  t.is(
+    SVG,
+    stringify(expectedCompat, {
+      transformNode: (node) =>
+        deepTransform(node, (key, value) => {
+          if (key === 'attrs') return ['attributes', value]
+          if (key === 'childs') return ['children', value]
+          return [key, value]
+        }),
+    })
+  )
+})
+
 test('Parsing and Stringify attributes', async (t) => {
   const res = await svgson(SVG2, {
-    transformNode: (node) => {
-      if (node.attributes['data-custom-data']) {
-        node.attributes['data-custom-data'] = JSON.parse(
-          unescapeAttr(node.attributes['data-custom-data'])
-        )
-      }
-      return node
-    },
+    transformNode: (node) =>
+      deepTransform(node, (key, value) => {
+        if (key === 'data-custom-data') {
+          return [key, JSON.parse(unescapeAttr(value))]
+        }
+        return [key, value]
+      }),
   })
   t.is(
     SVG2,
