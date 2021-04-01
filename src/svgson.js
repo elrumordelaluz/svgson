@@ -8,15 +8,21 @@ import {
 
 export const svgsonSync = function svgsonSync(
   input,
-  { transformNode = (node) => node, camelcase = false } = {}
+  { transformNode = (node) => node, camelcase = false, addWrap = true } = {}
 ) {
   const wrap = (input) => {
-    const cleanInput = removeDoctype(input)
-    return wrapInput(cleanInput)
+    if (addWrap) {
+      const cleanInput = removeDoctype(input)
+      return wrapInput(cleanInput)
+    }
+    return input
   }
 
   const unwrap = (res) => {
-    return res.name === 'root' ? res.children : res
+    if (addWrap) {
+      return res.name === 'root' ? res.children : res
+    }
+    return res
   }
 
   const applyFilters = (input) => {
