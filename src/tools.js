@@ -2,36 +2,31 @@ import omitDeep from 'omit-deep'
 import rename from 'deep-rename-keys'
 import { parseSync } from 'xml-reader'
 
-export const parseInput = input => {
+export const parseInput = (input) => {
   const parsed = parseSync(input, { parentNodes: false })
-  const hasMoreChildren = parsed.name === 'root' && parsed.children.length > 1
-  const isValid = hasMoreChildren
-    ? parsed.children.reduce((acc, { name }) => {
-        return !acc ? name === 'svg' : true
-      }, false)
-    : parsed.children[0].name === 'svg'
+  const isValid = parsed.name === 'svg'
 
   if (isValid) {
-    return hasMoreChildren ? parsed : parsed.children[0]
+    return parsed
   } else {
     throw Error('nothing to parse')
   }
 }
 
-export const removeDoctype = input => {
+export const removeDoctype = (input) => {
   return input.replace(/<[\/]{0,1}(\!?DOCTYPE|\??xml)[^><]*>/gi, '')
 }
-export const wrapInput = input => `<root>${input}</root>`
+export const wrapInput = (input) => `<root>${input}</root>`
 
-export const removeAttrs = obj => omitDeep(obj, ['parent'])
+export const removeAttrs = (obj) => omitDeep(obj, ['parent'])
 
 export const addCustomAttrs = (attrs, node) => ({
   ...node,
   ...attrs,
 })
 
-export const camelize = node => {
-  return rename(node, key => {
+export const camelize = (node) => {
+  return rename(node, (key) => {
     if (!notCamelcase(key)) {
       return toCamelCase(key)
     }
@@ -39,12 +34,12 @@ export const camelize = node => {
   })
 }
 
-export const toCamelCase = prop =>
+export const toCamelCase = (prop) =>
   prop.replace(/[-|:]([a-z])/gi, (all, letter) => letter.toUpperCase())
 
-const notCamelcase = prop => /^(data|aria)(-\w+)/.test(prop)
+const notCamelcase = (prop) => /^(data|aria)(-\w+)/.test(prop)
 
-export const escapeText = text => {
+export const escapeText = (text) => {
   if (text) {
     const str = String(text)
     return /[&<>]/.test(str)
@@ -54,7 +49,7 @@ export const escapeText = text => {
   return ''
 }
 
-export const escapeAttr = attr => {
+export const escapeAttr = (attr) => {
   return String(attr)
     .replace(/&/g, '&amp;')
     .replace(/'/g, '&apos;')

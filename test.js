@@ -107,6 +107,15 @@ const expectedOptimized = [
   },
 ]
 
+function deepTransform(obj, iterator) {
+  return transform(obj, (acc, val, key) => {
+    const [k, v] = iterator(key, val)
+    if (k === undefined) return
+    acc[k] =
+      typeof v === 'object' && v !== null ? deepTransform(v, iterator) : v
+  })
+}
+
 test('Fullfill a Promise', async (t) => {
   await t.notThrowsAsync(() => svgson(SVG))
 })
@@ -115,10 +124,10 @@ test('Reject a Promise', async (t) => {
   await t.throwsAsync(() => svgson('abc'))
 })
 
-test('Returns an Array when input is more than one SVG', async (t) => {
-  const res = await svgson(MULTIPLE_SVG)
-  t.true(Array.isArray(res))
-})
+// test('Returns an Array when input is more than one SVG', async (t) => {
+//   const res = await svgson(MULTIPLE_SVG)
+//   t.true(Array.isArray(res))
+// })
 
 test('Resulted nodes has basic keys', async (t) => {
   const res = await svgson(SVG)
@@ -148,15 +157,6 @@ test('Optimize using custom config', async (t) => {
   const res = await svgson(optimized)
   t.deepEqual(res, expectedOptimized[1])
 })
-
-function deepTransform(obj, iterator) {
-  return transform(obj, (acc, val, key) => {
-    const [k, v] = iterator(key, val)
-    if (k === undefined) return
-    acc[k] =
-      typeof v === 'object' && v !== null ? deepTransform(v, iterator) : v
-  })
-}
 
 test('Adds custom attributes via transformNode', async (t) => {
   const res = await svgson(SVG, {

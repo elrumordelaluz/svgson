@@ -1,30 +1,9 @@
-import {
-  parseInput,
-  wrapInput,
-  removeDoctype,
-  removeAttrs,
-  camelize,
-} from './tools'
+import { parseInput, removeAttrs, camelize } from './tools'
 
 export const svgsonSync = function svgsonSync(
   input,
-  { transformNode = (node) => node, camelcase = false, addWrap = true } = {}
+  { transformNode = (node) => node, camelcase = false } = {}
 ) {
-  const wrap = (input) => {
-    if (addWrap) {
-      const cleanInput = removeDoctype(input)
-      return wrapInput(cleanInput)
-    }
-    return input
-  }
-
-  const unwrap = (res) => {
-    if (addWrap) {
-      return res.name === 'root' ? res.children : res
-    }
-    return res
-  }
-
   const applyFilters = (input) => {
     let n
     n = removeAttrs(input)
@@ -35,7 +14,7 @@ export const svgsonSync = function svgsonSync(
     return n
   }
 
-  return unwrap(applyFilters(parseInput(wrap(input))))
+  return applyFilters(parseInput(input))
 }
 
 export default function svgson(...args) {
