@@ -3,11 +3,16 @@ import rename from 'deep-rename-keys'
 import { parseSync } from 'xml-reader'
 
 export const parseInput = (input) => {
-  const parsed = parseSync(input, { parentNodes: false })
-  const isValid = parsed.name === 'svg'
+  const parsed = parseSync(`<root>${input}</root>`, {
+    parentNodes: false,
+  })
+  const isValid =
+    parsed.children &&
+    parsed.children.length > 0 &&
+    parsed.children.every((node) => node.name === 'svg')
 
   if (isValid) {
-    return parsed
+    return parsed.children.length === 1 ? parsed.children[0] : parsed.children
   } else {
     throw Error('nothing to parse')
   }
