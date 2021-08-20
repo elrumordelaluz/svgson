@@ -1,15 +1,16 @@
 const test = require('ava')
 const { default: svgson, stringify, parseSync } = require('./dist/svgson.cjs')
-const svgo = require('svgo')
+const { optimize } = require('svgo')
 const transform = require('lodash.transform')
 const { expect } = require('chai')
 
 const svgoDefaultConfig = {
   plugins: [
-    { removeStyleElement: true },
-    { removeViewBox: false },
+    { name: 'removeStyleElement', active: true },
+    { name: 'removeViewBox', active: false },
     {
-      removeAttrs: {
+      name: 'removeAttrs',
+      params: {
         attrs: '(stroke-width|stroke-linecap|stroke-linejoin|)',
       },
     },
@@ -18,7 +19,8 @@ const svgoDefaultConfig = {
 }
 
 const optimizeSVG = (input, config) => {
-  return new svgo(config).optimize(input).then(({ data }) => data)
+  const result = optimize(input, config)
+  return result.data
 }
 
 const SVG =
@@ -148,8 +150,10 @@ test('Optimize using custom config', async (t) => {
   const optimized = await optimizeSVG(SVG, {
     plugins: [
       {
-        removeAttrs: {
-          attrs: '(width|height)',
+        name: 'removeAttrs',
+        params: {
+          attrs:
+            '(viewBox|width|height|stroke-width|stroke-linecap|stroke-linejoin|)',
         },
       },
     ],
