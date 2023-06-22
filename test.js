@@ -6,8 +6,16 @@ const { expect } = require('chai')
 
 const svgoDefaultConfig = {
   plugins: [
-    { name: 'removeStyleElement', active: true },
-    { name: 'removeViewBox', active: false },
+    {
+      name: 'preset-default',
+      params: {
+        overrides: {
+          removeViewBox: false,
+        },
+      },
+    },
+
+    'removeStyleElement',
     {
       name: 'removeAttrs',
       params: {
@@ -224,16 +232,16 @@ test('Sync mode throws', (t) => {
   t.throws(() => parseSync('abc'))
 })
 
-test.cb('Applies camelCase', (t) => {
-  svgson(SVG, {
+test('Applies camelCase', async (t) => {
+  const res = await svgson(SVG, {
     camelcase: true,
-  }).then((res) => {
-    const childrenAttrs = res.children[0].attributes
-    expect(childrenAttrs).to.deep.include.keys('strokeLinecap', 'data-name')
-    expect(childrenAttrs).to.have.property('strokeLinecap', 'round')
-    expect(childrenAttrs).to.have.property('data-name', 'stroke')
-    t.end()
   })
+
+  const childrenAttrs = res.children[0].attributes
+  expect(childrenAttrs).to.deep.include.keys('strokeLinecap', 'data-name')
+  expect(childrenAttrs).to.have.property('strokeLinecap', 'round')
+  expect(childrenAttrs).to.have.property('data-name', 'stroke')
+  // t.end()
 })
 
 test('Stringify', async (t) => {
