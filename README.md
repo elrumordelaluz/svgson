@@ -64,6 +64,7 @@ parse(`
       type: 'element',
       value: '',
       attributes: {},
+      parent: null,
       children: [
         {
           name: 'line',
@@ -78,6 +79,7 @@ parse(`
             x2: '250',
             y2: '150'
           },
+          parent: null,
           children: []
         }
       ]
