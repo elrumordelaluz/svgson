@@ -54,6 +54,7 @@ const expectedCompat = {
   type: 'element',
   name: 'svg',
   attrs: { viewBox: '0 0 100 100', width: '100', height: '100' },
+  parent: null,
   value: '',
   childs: [
     {
@@ -64,6 +65,7 @@ const expectedCompat = {
         'data-name': 'stroke',
         'stroke-linecap': 'round',
       },
+      parent: null,
       value: '',
     },
   ],
@@ -72,6 +74,7 @@ const expectedCompat = {
 const expectedTransformed = {
   tag: 'svg',
   props: { width: '100', height: '100', viewBox: '0 0 100 100' },
+  parent: null,
   children: [
     {
       tag: 'circle',
@@ -80,6 +83,7 @@ const expectedTransformed = {
         'data-name': 'stroke',
         'stroke-linecap': 'round',
       },
+      parent: null,
     },
   ],
 }
@@ -89,12 +93,14 @@ const expectedOptimized = [
     type: 'element',
     name: 'svg',
     attributes: { width: '100', height: '100', viewBox: '0 0 100 100' },
+    parent: null,
     value: '',
     children: [
       {
         type: 'element',
         name: 'circle',
         attributes: { r: '15', 'data-name': 'stroke' },
+        parent: null,
         children: [],
         value: '',
       },
@@ -104,12 +110,14 @@ const expectedOptimized = [
     type: 'element',
     name: 'svg',
     attributes: {},
+    parent: null,
     value: '',
     children: [
       {
         type: 'element',
         name: 'circle',
         attributes: { r: '15', 'data-name': 'stroke' },
+        parent: null,
         children: [],
         value: '',
       },
@@ -136,6 +144,7 @@ test('Reject a Promise', async (t) => {
 
 test('Returns an Array when input is more than one SVG', async (t) => {
   const res = await svgson(MULTIPLE_SVG)
+  console.log(res)
   t.true(Array.isArray(res))
 })
 
@@ -244,8 +253,9 @@ test('Applies camelCase', async (t) => {
   // t.end()
 })
 
-test('Stringify', async (t) => {
+test.only('Stringify', async (t) => {
   const res = await svgson(SVG)
+
   t.is(SVG, stringify(res))
 })
 

@@ -1,4 +1,4 @@
-import { parseInput, removeAttrs, camelize } from './tools'
+import { parseInput, camelize } from './tools'
 
 export const svgsonSync = function svgsonSync(
   input,
@@ -6,8 +6,7 @@ export const svgsonSync = function svgsonSync(
 ) {
   const applyFilters = (input) => {
     let n
-    n = removeAttrs(input)
-    n = transformNode(n)
+    n = transformNode(input)
     if (camelcase) {
       n = camelize(n)
     }

@@ -1,4 +1,3 @@
-import omitDeep from 'omit-deep'
 import rename from 'deep-rename-keys'
 import { parseSync } from 'xml-reader'
 
@@ -23,7 +22,7 @@ export const removeDoctype = (input) => {
 }
 export const wrapInput = (input) => `<root>${input}</root>`
 
-export const removeAttrs = (obj) => omitDeep(obj, ['parent'])
+// export const removeAttrs = (obj) => omitDeep(obj, ['parent'])
 
 export const addCustomAttrs = (attrs, node) => ({
   ...node,
