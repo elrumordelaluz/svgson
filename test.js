@@ -253,9 +253,8 @@ test('Applies camelCase', async (t) => {
   // t.end()
 })
 
-test.only('Stringify', async (t) => {
+test('Stringify', async (t) => {
   const res = await svgson(SVG)
-
   t.is(SVG, stringify(res))
 })
 
