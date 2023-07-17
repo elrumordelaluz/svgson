@@ -1,27 +1,28 @@
-declare module "svgson" {
+declare module 'svgson' {
   export interface INode {
-    name: string,
-    type: string,
-    value: string,
-    attributes: Record<string, string>,
+    name: string
+    type: string
+    value: string
+    attributes: Record<string, string>
     children: INode[]
   }
 
   interface IParseOptions {
-    transformNode?: (node: INode) => INode,
+    transformNode?: (node: INode) => INode
     camelcase?: boolean
   }
 
-  type TEscape = (text?: string) => string;
+  type TEscape = (text?: string) => string
 
   interface IStringifyOptions {
-    transformAttr?: (key: string, value: string, escape: TEscape) => string;
-    selfClose?: boolean;
+    transformAttr?: (key: string, value: string, escape: TEscape) => string
+    transformNode?: (node: INode) => INode
+    selfClose?: boolean
   }
 
-  function parse(input: string, options?: IParseOptions): Promise<INode>;
+  function parse(input: string, options?: IParseOptions): Promise<INode>
 
-  function parseSync(input: string, options?: IParseOptions): INode;
+  function parseSync(input: string, options?: IParseOptions): INode
 
-  function stringify(ast: INode, options?: IStringifyOptions): string;
+  function stringify(ast: INode, options?: IStringifyOptions): string
 }
