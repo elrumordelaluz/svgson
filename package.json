@@ -1,6 +1,6 @@
 {
   "name": "svgson",
-  "version": "5.3.0",
+  "version": "5.3.1",
   "description": "Transform svg files into Objects",
   "main": "dist/svgson.cjs.js",
   "module": "dist/svgson.esm.js",
