@@ -202,19 +202,19 @@ Returns: `String`
   }
   ```
 
-  - **`options.transformNode`**
+- **`options.transformNode`**
 
-  Function to apply on each node when stringifying, useful when need to reshape nodes or change/update values.
+Function to apply on each node when stringifying, useful when need to reshape nodes or change/update values.
 
-  Type: `Function` that returns the node
+Type: `Function` that returns the node
 
-  Default:
+Default:
 
-  ```js
-  function(node){
-    return node
-  }
-  ```
+```js
+function(node){
+  return node
+}
+```
 
 - **`options.selfClose`**
 
